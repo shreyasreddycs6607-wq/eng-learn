@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/services/app_services.dart';
 import '../../models/conversation.dart';
@@ -66,7 +67,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
         return;
       }
       setState(() => _controller = controller);
-    } catch (_) {
+    } catch (e) {
+      if (kDebugMode) debugPrint('[UI] Could not load: $e');
       if (mounted) setState(() => _failed = true);
     }
   }
@@ -193,14 +195,25 @@ class _ConversationScreenState extends State<ConversationScreen> {
     final revealed = c.state.outcome == StepOutcome.revealed;
     final retry = c.state.awaitingRetry;
 
-    return Column(
+    return LayoutBuilder(
+      builder: (context, box) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (previous != null && !previous.isLearner) _bubble(context, previous),
-        const SizedBox(height: 16),
-        Text(exercise.kannadaText ?? '', style: Theme.of(context).textTheme.headlineMedium),
-        const SizedBox(height: 4),
-        Text('What do you say?', style: Theme.of(context).textTheme.bodyMedium),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: box.maxHeight * (result == null ? 0.45 : 0.3)),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (previous != null && !previous.isLearner) _bubble(context, previous),
+                const SizedBox(height: 16),
+                Text(exercise.kannadaText ?? '', style: Theme.of(context).textTheme.headlineMedium),
+                const SizedBox(height: 4),
+                Text('What do you say?', style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+          ),
+        ),
         const SizedBox(height: 16),
         Expanded(
           child: KeyedSubtree(
@@ -222,6 +235,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
             onContinue: retry ? c.retry : () => _next(c),
           ),
       ],
+    ),
     );
   }
 
@@ -291,7 +305,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 Text('Say this:', style: Theme.of(context).textTheme.bodyMedium),
                 const SizedBox(height: 8),
                 _bubble(context, target),
-                if (target.audioPath != null) ...[const SizedBox(height: 8), const AudioSpeedControl()],
+                if (appServices.audio.hasAudio(target.audioPath)) ...[const SizedBox(height: 8), const AudioSpeedControl()],
               ],
             ),
           ),

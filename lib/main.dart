@@ -3,9 +3,10 @@ import 'core/services/app_services.dart';
 import 'core/theme/app_theme.dart';
 import 'screens/home/home_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   appServices = AppServices();
+  await appServices.audio.loadBundledAssets();
   appServices.validateCurriculumInDebug(); // fire-and-forget, debug builds only
   runApp(const EnglishKaliyonaApp());
 }

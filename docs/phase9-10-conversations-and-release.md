@@ -25,7 +25,11 @@ Correct → advance. Incorrect #1 → correction + one retry. Incorrect #2 → a
 
 ## Audio
 
-The 38 English conversation clips (`audio/english/conv_*.wav`) are **offline Windows SAPI placeholders** (Microsoft David), same as Phase 5. Replace with real recordings under the same file names. No Kannada/Telugu conversation audio exists yet.
+All English audio in the app (229 clips, `assets/audio/english/*.wav`, ~10 MB) is **offline Windows SAPI placeholder speech** (Microsoft David) — robotic, but every English word, sentence, listening exercise and conversation line is playable offline. Replace with real recordings under the **same file names**; no code or JSON changes needed.
+
+Before the production audit, 184 of the 230 audio paths in the curriculum pointed at `.mp3` files that did not exist (including 11 listening exercises, which were therefore unanswerable). `test/audio_assets_test.dart` now fails if any referenced clip is missing.
+
+**Still missing:** all Kannada and Telugu audio. The one Telugu reference (`audio/telugu/water_telugu.mp3`) has no recording; the app hides audio buttons whose file is not bundled (`AudioService.hasAudio`), so nothing shows as broken. When a recording is added, remove it from `optionalMissing` in `test/audio_assets_test.dart`.
 
 ## Kannada review needed
 

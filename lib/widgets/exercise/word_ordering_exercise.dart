@@ -76,21 +76,30 @@ class _WordOrderingExerciseState extends State<WordOrderingExercise> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Your sentence:'),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: displayWords.map((o) => _chip(o, placed: true)).toList(),
-        ),
-        const SizedBox(height: 24),
-        if (!_locked) ...[
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _bank.map((o) => _chip(o, placed: false)).toList(),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text('Your sentence:'),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: displayWords.map((o) => _chip(o, placed: true)).toList(),
+                ),
+                const SizedBox(height: 24),
+                if (!_locked)
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: _bank.map((o) => _chip(o, placed: false)).toList(),
+                  ),
+              ],
+            ),
           ),
-          const Spacer(),
+        ),
+        if (!_locked) ...[
           Semantics(
             label: 'Check answer',
             child: PrimaryButton(label: 'CHECK', onPressed: _bank.isEmpty && _built.isNotEmpty ? _check : null),

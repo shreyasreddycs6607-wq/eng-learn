@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/services/app_services.dart';
 import '../../models/exercise.dart';
@@ -50,7 +51,8 @@ class _DailyRevisionScreenState extends State<DailyRevisionScreen> {
         _controller = PracticeController(exercises: exercises, progressRepository: appServices.exerciseProgress);
         _phase = all.isEmpty ? _Phase.noHistory : (exercises.isEmpty ? _Phase.caughtUp : _Phase.intro);
       });
-    } catch (_) {
+    } catch (e) {
+      if (kDebugMode) debugPrint('[UI] Could not load: $e');
       if (mounted) setState(() => _phase = _Phase.error);
     }
   }
@@ -118,11 +120,20 @@ class _DailyRevisionScreenState extends State<DailyRevisionScreen> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              const Spacer(),
-              Text(title, style: Theme.of(context).textTheme.displayMedium, textAlign: TextAlign.center),
-              const SizedBox(height: 16),
-              Text(body, style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center),
-              const Spacer(),
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(title, style: Theme.of(context).textTheme.displayMedium, textAlign: TextAlign.center),
+                        const SizedBox(height: 16),
+                        Text(body, style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               PrimaryButton(label: button, onPressed: onPressed),
             ],
           ),

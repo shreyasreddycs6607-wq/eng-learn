@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 import 'package:flutter/widgets.dart';
 import '../models/audio_state.dart';
 import 'audio_backend.dart';
@@ -15,6 +16,14 @@ class AudioService with WidgetsBindingObserver {
   AudioState _state = const AudioState.idle();
   StreamSubscription<void>? _completeSub;
 
+  /// Bumped by every play()/stop(): an in-flight play() that finds it changed
+  /// has been superseded (a newer tap, or the learner left) and must neither
+  /// start audio nor overwrite the newer state.
+  int _playSeq = 0;
+
+  /// Asset paths actually bundled in the app; null until [loadBundledAssets].
+  Set<String>? _bundled;
+
   AudioService([AudioBackend? backend]) : _backend = backend ?? AudioplayersBackend() {
     _completeSub = _backend.onComplete.listen((_) {
       _emit(_state.copyWith(status: AudioPlaybackStatus.completed));
@@ -25,21 +34,48 @@ class AudioService with WidgetsBindingObserver {
   Stream<AudioState> get stateStream => _stateController.stream;
   AudioState get state => _state;
 
+  /// Reads the real asset manifest once so the UI can tell "no recording yet"
+  /// from "recording exists". Until it has loaded (or if it fails) every path
+  /// is treated as present, so nothing is hidden by mistake.
+  Future<void> loadBundledAssets([Future<Iterable<String>> Function()? lister]) async {
+    try {
+      final all = await (lister?.call() ?? _listBundledAssets());
+      _bundled = all.toSet();
+    } catch (e) {
+      if (kDebugMode) debugPrint('[AUDIO] Could not read the asset manifest: $e');
+    }
+  }
+
+  static Future<Iterable<String>> _listBundledAssets() async =>
+      (await AssetManifest.loadFromAssetBundle(rootBundle)).listAssets();
+
+  /// Whether [assetPath] (relative to assets/, e.g. "audio/english/water.wav")
+  /// is bundled. Audio that is not there is hidden, never shown as a broken button.
+  bool isBundled(String assetPath) => _bundled?.contains('assets/$assetPath') ?? true;
+
+  /// True when there is a path and its recording exists.
+  bool hasAudio(String? assetPath) => assetPath != null && isBundled(assetPath);
+
   /// (Re)starts playback of [assetPath] — relative to assets/, e.g.
   /// "audio/english/water.mp3". Stops whatever was playing first, so two
   /// clips never overlap. Returns false (never throws) if the asset can't
   /// be played, so a missing/corrupt file never crashes the lesson.
   Future<bool> play(String assetPath) async {
+    final seq = ++_playSeq;
     _emit(AudioState(status: AudioPlaybackStatus.loading, currentAsset: assetPath, speed: _state.speed));
     try {
       await _backend.stop();
+      if (seq != _playSeq) return false;
       await _backend.play(assetPath);
+      if (seq != _playSeq) return false;
       await _backend.setSpeed(_state.speed);
+      if (seq != _playSeq) return false;
       _emit(_state.copyWith(status: AudioPlaybackStatus.playing));
       if (kDebugMode) debugPrint('[AUDIO] Playing $assetPath');
       return true;
     } catch (e) {
-      _emit(AudioState(status: AudioPlaybackStatus.error, currentAsset: assetPath, speed: _state.speed));
+      // A superseded request must not report its failure over the newer one.
+      if (seq == _playSeq) _emit(AudioState(status: AudioPlaybackStatus.error, currentAsset: assetPath, speed: _state.speed));
       if (kDebugMode) debugPrint('[AUDIO] Error loading $assetPath: $e');
       return false;
     }
@@ -75,6 +111,7 @@ class AudioService with WidgetsBindingObserver {
   }
 
   Future<void> stop() async {
+    _playSeq++;
     await _backend.stop();
     _emit(AudioState.idle(speed: _state.speed));
   }

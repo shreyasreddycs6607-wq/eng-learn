@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/services/app_services.dart';
 import '../../models/lesson.dart';
@@ -17,6 +18,8 @@ class PracticeScreen extends StatefulWidget {
 
 class _PracticeScreenState extends State<PracticeScreen> {
   bool _loading = true;
+  bool _failed = false;
+  bool _wentToSpeaking = false;
   PracticeController? _controller;
 
   @override
@@ -33,24 +36,38 @@ class _PracticeScreenState extends State<PracticeScreen> {
   }
 
   Future<void> _load() async {
-    final exercises = await appServices.exercises.forLesson(widget.lesson.id);
-    if (!mounted) return;
-    final controller = PracticeController(
-      lesson: widget.lesson,
-      exercises: exercises,
-      progressRepository: appServices.exerciseProgress,
-    );
-    controller.startSession();
-    setState(() {
-      _controller = controller;
-      _loading = false;
-    });
+    try {
+      final exercises = await appServices.exercises.forLesson(widget.lesson.id);
+      if (!mounted) return;
+      final controller = PracticeController(
+        lesson: widget.lesson,
+        exercises: exercises,
+        progressRepository: appServices.exerciseProgress,
+      );
+      controller.startSession();
+      setState(() {
+        _controller = controller;
+        _loading = false;
+      });
+    } catch (e) {
+      if (kDebugMode) debugPrint('[PRACTICE] Could not load exercises: $e');
+      if (mounted) {
+        setState(() {
+          _failed = true;
+          _loading = false;
+        });
+      }
+    }
   }
 
   void _goToSpeaking(PracticeController controller) {
+    if (_wentToSpeaking) return;
+    _wentToSpeaking = true;
     appServices.audio.stop();
     final session = controller.session;
-    Navigator.of(context).push(
+    // Replace this screen: the session is over, so Back from Speaking should
+    // return to the lesson, not to a finished practice screen that can't be answered.
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => SpeakingScreen(
           lesson: widget.lesson,
@@ -63,6 +80,9 @@ class _PracticeScreenState extends State<PracticeScreen> {
   }
 
   void _continue(PracticeController controller) {
+    // Only a tap on the feedback card advances; a stray second tap must not
+    // fall through to the "finished" branch and navigate again.
+    if (controller.session.status != PracticeStatus.showingFeedback) return;
     appServices.audio.stop();
     controller.continueToNext();
     if (controller.session.status == PracticeStatus.completed) {
@@ -74,6 +94,18 @@ class _PracticeScreenState extends State<PracticeScreen> {
   Widget build(BuildContext context) {
     if (_loading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    if (_failed) {
+      return Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Text("Couldn't load the practice. Please go back and try again.",
+                style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center),
+          ),
+        ),
+      );
     }
 
     final controller = _controller!;

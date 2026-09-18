@@ -31,10 +31,36 @@ class SpeechToTextBackend implements SpeechBackend {
   final SpeechToText _speech = SpeechToText();
   bool _initialized = false;
 
+  // The plugin reports errors and end-of-session through callbacks given to
+  // initialize(), not through listen(); route them to the current session.
+  void Function(String transcript, bool isFinal, double? confidence)? _onResult;
+  void Function(String message)? _onError;
+  bool _sawListening = false;
+  bool _sessionEnded = false;
+
   @override
   Future<bool> initialize() async {
     if (_initialized) return true;
-    _initialized = await _speech.initialize(debugLogging: false);
+    _initialized = await _speech.initialize(
+      debugLogging: false,
+      onError: (error) {
+        _sessionEnded = true;
+        _onError?.call(error.errorMsg);
+      },
+      onStatus: (status) {
+        if (status == SpeechToText.listeningStatus) _sawListening = true;
+        // The engine stopped without ever delivering a final transcript (nothing
+        // heard / timed out): report an empty final result so the learner gets
+        // "Listen Again" instead of a screen that waits forever. Only after this
+        // session actually started listening, so a late status from the previous
+        // session can't end a new one.
+        final ended = status == SpeechToText.doneStatus || status == SpeechToText.notListeningStatus;
+        if (ended && _sawListening && !_sessionEnded) {
+          _sessionEnded = true;
+          _onResult?.call('', true, null);
+        }
+      },
+    );
     return _initialized;
   }
 
@@ -53,13 +79,20 @@ class SpeechToTextBackend implements SpeechBackend {
     required void Function(String message) onError,
   }) async {
     if (!_initialized) return false;
+    _onResult = onResult;
+    _onError = onError;
+    _sawListening = false;
+    _sessionEnded = false;
     try {
       await _speech.listen(
-        onResult: (result) => onResult(
-          result.recognizedWords,
-          result.finalResult,
-          result.hasConfidenceRating ? result.confidence : null,
-        ),
+        onResult: (result) {
+          if (result.finalResult) _sessionEnded = true;
+          onResult(
+            result.recognizedWords,
+            result.finalResult,
+            result.hasConfidenceRating ? result.confidence : null,
+          );
+        },
         listenOptions: SpeechListenOptions(
           // Request on-device recognition specifically — this is what makes
           // the attempt offline where the platform supports it. If the
@@ -86,10 +119,16 @@ class SpeechToTextBackend implements SpeechBackend {
   Future<void> stop() => _speech.stop();
 
   @override
-  Future<void> cancel() => _speech.cancel();
+  Future<void> cancel() {
+    _onResult = null; // a cancelled attempt must not report a result
+    _onError = null;
+    return _speech.cancel();
+  }
 
   @override
   Future<void> dispose() async {
+    _onResult = null;
+    _onError = null;
     await _speech.cancel();
   }
 }

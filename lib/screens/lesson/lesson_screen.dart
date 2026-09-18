@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../../core/services/app_services.dart';
 import '../../models/lesson.dart';
@@ -18,6 +20,7 @@ class LessonScreen extends StatefulWidget {
 
 class _LessonScreenState extends State<LessonScreen> {
   int _index = 0;
+  bool _leaving = false;
 
   @override
   void dispose() {
@@ -25,17 +28,17 @@ class _LessonScreenState extends State<LessonScreen> {
     super.dispose();
   }
 
-  Future<void> _next() async {
-    await appServices.audio.stop();
+  void _next() {
+    if (_leaving) return;
+    unawaited(appServices.audio.stop());
     if (_index < widget.lesson.contents.length - 1) {
       setState(() => _index++);
       return;
     }
-    await appServices.progress.setCurrentLesson(widget.lesson.id);
-    if (!mounted) return;
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => PracticeScreen(lesson: widget.lesson)),
-    );
+    _leaving = true;
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => PracticeScreen(lesson: widget.lesson)))
+        .then((_) => _leaving = false); // coming back (Back from Practice) re-enables Continue
   }
 
   @override
@@ -48,21 +51,30 @@ class _LessonScreenState extends State<LessonScreen> {
           child: Column(
             children: [
               LessonHeader(current: _index + 1, total: widget.lesson.contents.length),
-              const Spacer(),
-              Text(content.kannadaText, style: Theme.of(context).textTheme.displayMedium, textAlign: TextAlign.center),
-              const SizedBox(height: 16),
-              Text(content.englishText, style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center),
-              const SizedBox(height: 32),
-              AudioPlayerButton(audioPath: content.englishAudio, label: 'English pronunciation'),
-              if (content.englishAudio != null) ...[
-                const SizedBox(height: 12),
-                const AudioSpeedControl(),
-              ],
-              if (content.teluguAudio != null) ...[
-                const SizedBox(height: 16),
-                AudioPlayerButton(audioPath: content.teluguAudio, label: 'Telugu explanation', showLabel: true),
-              ],
-              const Spacer(),
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(content.kannadaText, style: Theme.of(context).textTheme.displayMedium, textAlign: TextAlign.center),
+                        const SizedBox(height: 16),
+                        Text(content.englishText, style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center),
+                        const SizedBox(height: 32),
+                        AudioPlayerButton(audioPath: content.englishAudio, label: 'English pronunciation'),
+                        if (appServices.audio.hasAudio(content.englishAudio)) ...[
+                          const SizedBox(height: 12),
+                          const AudioSpeedControl(),
+                        ],
+                        if (appServices.audio.hasAudio(content.teluguAudio)) ...[
+                          const SizedBox(height: 16),
+                          AudioPlayerButton(audioPath: content.teluguAudio, label: 'Telugu explanation', showLabel: true),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               PrimaryButton(label: 'Continue', onPressed: _next),
             ],
           ),

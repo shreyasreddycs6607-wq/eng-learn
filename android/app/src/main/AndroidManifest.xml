@@ -4,7 +4,7 @@
          Deliberately no INTERNET permission — recognition is on-device only. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
-        android:label="english_kaliyona"
+        android:label="English Kaliyona"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -41,6 +41,12 @@
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
     <queries>
+        <!-- Android 11+ package visibility: without this the speech recognizer
+             service is invisible to the app and speaking practice always reports
+             "unavailable". -->
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>

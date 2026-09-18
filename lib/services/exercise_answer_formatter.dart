@@ -7,8 +7,6 @@ import '../models/exercise_answer.dart';
 class ExerciseAnswerFormatter {
   static String formatExpectedAnswer(Exercise exercise) => _format(exercise, exercise.answer);
 
-  static String formatSubmittedAnswer(Exercise exercise, ExerciseAnswer answer) => _format(exercise, answer);
-
   static String _format(Exercise exercise, ExerciseAnswer answer) {
     return switch (answer) {
       OptionIdAnswer(value: final id) => _optionText(exercise, id),

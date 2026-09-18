@@ -17,6 +17,7 @@ Lesson _lesson({String id = 'L001'}) => Lesson(
       kannadaTitle: 'ನಮಸ್ಕಾರ',
       description: 'd',
       estimatedMinutes: 5,
+      contents: [LessonContent(id: 'C001', lessonId: id, type: ContentType.word, kannadaText: 'ನೀರು', englishText: 'Water', order: 1)],
     );
 
 Vocabulary _vocab({String? englishAudio}) => Vocabulary(

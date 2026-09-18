@@ -73,14 +73,6 @@ class ExerciseProgressRepository {
     return rows.map(_toDomain).toList();
   }
 
-  /// Items with at least one recorded failure — used for deterministic
-  /// revision-queue prioritization, not a "most difficult" AI ranking (§24).
-  Future<List<ExerciseProgress>> getDifficultItems() async {
-    final rows = await (_db.select(_db.exerciseProgressEntries)..where((t) => t.incorrectCount.isBiggerThanValue(0)))
-        .get();
-    return rows.map(_toDomain).toList();
-  }
-
   Future<Map<MasteryLevel, int>> masterySummary() async {
     final all = await getAll();
     final summary = {for (final level in MasteryLevel.values) level: 0};

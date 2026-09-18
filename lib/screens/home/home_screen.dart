@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/services/app_services.dart';
 import '../../models/lesson.dart';
@@ -27,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _hasHistory = false;
   Map<MasteryLevel, int> _mastery = {};
   bool _loading = true;
-  String? _error;
+  bool _error = false;
 
   @override
   void initState() {
@@ -56,9 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       // Bundled content/database failure — should only happen from a
       // packaging bug, but must never leave the learner on a blank screen.
+      if (kDebugMode) debugPrint('[HOME] Could not load: $e');
       if (!mounted) return;
       setState(() {
-        _error = e.toString();
+        _error = true;
         _loading = false;
       });
     }
@@ -71,10 +73,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return _lessons.last;
   }
 
+  bool _opening = false;
+
   Future<void> _continueLesson() async {
+    if (_opening) return; // a double tap on the lesson card must not stack two lessons
+    _opening = true;
     await Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => LessonScreen(lesson: _nextLesson)),
     );
+    _opening = false;
     _load();
   }
 
@@ -83,13 +90,29 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_loading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    if (_error != null) {
+    if (_error) {
       return Scaffold(
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
-            child: Text('Could not load lesson content.\n$_error',
-                textAlign: TextAlign.center),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("Couldn't load your lessons.",
+                    style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center),
+                const SizedBox(height: 24),
+                PrimaryButton(
+                  label: 'Try again',
+                  onPressed: () {
+                    setState(() {
+                      _error = false;
+                      _loading = true;
+                    });
+                    _load();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       );

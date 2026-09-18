@@ -84,24 +84,33 @@ class _SpeakingScreenState extends State<SpeakingScreen> {
                   ),
                 ],
               ),
-              const Spacer(),
-              Text('Say:', style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 16),
-              Text(_sentence, style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center),
-              const SizedBox(height: 32),
-              AudioPlayerButton(audioPath: _audioPath, label: 'sentence'),
-              if (_audioPath != null) ...[
-                const SizedBox(height: 12),
-                const AudioSpeedControl(),
-              ],
-              const SizedBox(height: 28),
-              if (_repeated)
-                const Icon(Icons.check_circle_rounded, color: AppColors.correct, size: 56)
-              else
-                PrimaryButton(label: "I repeated it", onPressed: () => setState(() => _repeated = true)),
-              const SizedBox(height: 12),
-              Text(_repeated ? 'Good!' : 'Repeat the sentence aloud.', style: Theme.of(context).textTheme.bodyMedium),
-              const Spacer(),
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Say:', style: Theme.of(context).textTheme.bodyLarge),
+                        const SizedBox(height: 16),
+                        Text(_sentence, style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center),
+                        const SizedBox(height: 32),
+                        AudioPlayerButton(audioPath: _audioPath, label: 'sentence'),
+                        if (appServices.audio.hasAudio(_audioPath)) ...[
+                          const SizedBox(height: 12),
+                          const AudioSpeedControl(),
+                        ],
+                        const SizedBox(height: 28),
+                        if (_repeated)
+                          const Icon(Icons.check_circle_rounded, color: AppColors.correct, size: 56)
+                        else
+                          PrimaryButton(label: "I repeated it", onPressed: () => setState(() => _repeated = true)),
+                        const SizedBox(height: 12),
+                        Text(_repeated ? 'Good!' : 'Repeat the sentence aloud.', style: Theme.of(context).textTheme.bodyMedium),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               if (_repeated)
                 PrimaryButton(label: 'Continue', onPressed: _continue)
               else

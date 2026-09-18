@@ -109,17 +109,18 @@ class _SpeakingExerciseState extends State<SpeakingExercise> {
       return _buildResult(context, _controller.lastResult!);
     }
 
-    return Center(
-      child: MicrophoneButton(state: state, onTap: _toggleMic),
-    );
+    return _scroll(MicrophoneButton(state: state, onTap: _toggleMic));
   }
+
+  /// Centered, and scrollable if the room left by the prompt is small.
+  Widget _scroll(Widget child) => Center(child: SingleChildScrollView(child: child));
 
   Widget _buildFallback(BuildContext context, SpeakingUiState state) {
     final message = state == SpeakingUiState.unavailable
         ? "Speech recognition isn't available on this device."
         : 'Microphone access is needed for speaking practice.';
-    return Center(
-      child: Column(
+    return _scroll(
+      Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(message, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
@@ -138,8 +139,8 @@ class _SpeakingExerciseState extends State<SpeakingExercise> {
   Widget _buildResult(BuildContext context, SpeakingResult result) {
     switch (result.outcome) {
       case SpeakingOutcome.good:
-        return Center(
-          child: Column(
+        return _scroll(
+          Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(Icons.check_circle_rounded, color: AppColors.correct, size: 56),
@@ -152,8 +153,8 @@ class _SpeakingExerciseState extends State<SpeakingExercise> {
         );
       case SpeakingOutcome.almost:
       case SpeakingOutcome.tryAgain:
-        return Center(
-          child: Column(
+        return _scroll(
+          Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
@@ -179,8 +180,8 @@ class _SpeakingExerciseState extends State<SpeakingExercise> {
         );
       case SpeakingOutcome.listenAgain:
       case SpeakingOutcome.error:
-        return Center(
-          child: Column(
+        return _scroll(
+          Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text("I couldn't understand that.", style: Theme.of(context).textTheme.bodyLarge),

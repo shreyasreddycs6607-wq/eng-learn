@@ -34,32 +34,52 @@ class PracticeBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               LessonHeader(current: session.currentIndex + 1, total: session.total),
-              const SizedBox(height: 24),
-              if (revealText && exercise.kannadaText != null)
-                Text(exercise.kannadaText!, style: Theme.of(context).textTheme.displayMedium),
-              if (revealText && exercise.englishText != null)
-                Text(exercise.englishText!, style: Theme.of(context).textTheme.displayMedium),
-              const SizedBox(height: 12),
-              Text(exercise.question, style: Theme.of(context).textTheme.headlineMedium),
-              if (exercise.audioPath != null) ...[
-                const SizedBox(height: 16),
-                AudioPlayerButton(audioPath: exercise.audioPath, label: 'audio', size: 56),
-              ],
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               Expanded(
-                child: buildExerciseView(
-                  exercise: exercise,
-                  submittedAnswer: result?.submittedAnswer,
-                  onSubmit: controller.submitAnswer,
+                child: LayoutBuilder(
+                  builder: (context, box) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Smaller share while feedback is showing, so the feedback card always fits.
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: box.maxHeight * (result == null ? 0.4 : 0.25)),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (revealText && exercise.kannadaText != null)
+                                Text(exercise.kannadaText!, style: Theme.of(context).textTheme.displayMedium),
+                              if (revealText && exercise.englishText != null)
+                                Text(exercise.englishText!, style: Theme.of(context).textTheme.displayMedium),
+                              const SizedBox(height: 12),
+                              Text(exercise.question, style: Theme.of(context).textTheme.headlineMedium),
+                              if (exercise.audioPath != null) ...[
+                                const SizedBox(height: 16),
+                                AudioPlayerButton(audioPath: exercise.audioPath, label: 'audio', size: 56),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: buildExerciseView(
+                          exercise: exercise,
+                          submittedAnswer: result?.submittedAnswer,
+                          onSubmit: controller.submitAnswer,
+                        ),
+                      ),
+                      if (result != null)
+                        FeedbackCard(
+                          feedbackType: result.feedbackType,
+                          correctAnswer: result.correctAnswerText,
+                          explanation: result.explanation,
+                          onContinue: onContinue,
+                        ),
+                    ],
+                  ),
                 ),
               ),
-              if (result != null)
-                FeedbackCard(
-                  feedbackType: result.feedbackType,
-                  correctAnswer: result.correctAnswerText,
-                  explanation: result.explanation,
-                  onContinue: onContinue,
-                ),
             ],
           ),
         ),

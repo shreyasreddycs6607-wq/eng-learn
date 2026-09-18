@@ -33,9 +33,10 @@ class AudioPlayerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final path = audioPath;
-    if (path == null) return const SizedBox.shrink();
     final service = audioService ?? appServices.audio;
+    final path = audioPath;
+    // No path, or no recording bundled for it (yet): show nothing, not a broken button.
+    if (path == null || !service.isBundled(path)) return const SizedBox.shrink();
 
     return StreamBuilder<AudioState>(
       stream: service.stateStream,

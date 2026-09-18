@@ -125,14 +125,6 @@ void main() {
     });
   });
 
-  test('difficult items include only exercises with at least one failure', () async {
-    await repo.recordAttempt(attempt('E_GOOD', isCorrect: true));
-    await repo.recordAttempt(attempt('E_BAD', isCorrect: false));
-
-    final difficult = await repo.getDifficultItems();
-    expect(difficult.map((e) => e.exerciseId), ['E_BAD']);
-  });
-
   test('pruneDangling removes rows for exercises no longer in the curriculum', () async {
     await repo.recordAttempt(attempt('E_STILL_EXISTS'));
     await repo.recordAttempt(attempt('E_REMOVED'));

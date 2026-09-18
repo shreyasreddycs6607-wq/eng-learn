@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/services/app_services.dart';
 import '../../models/lesson.dart';
@@ -29,11 +30,15 @@ class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
   @override
   void initState() {
     super.initState();
-    appServices.progress.completeLesson(
-      lessonId: widget.lesson.id,
-      correctInPass: widget.correct,
-      incorrectInPass: widget.incorrect,
-    );
+    appServices.progress
+        .completeLesson(
+          lessonId: widget.lesson.id,
+          correctInPass: widget.correct,
+          incorrectInPass: widget.incorrect,
+        )
+        .catchError((Object e) {
+      if (kDebugMode) debugPrint('[PROGRESS] Could not save lesson completion: $e');
+    });
   }
 
   void _goHome() {

@@ -22,8 +22,9 @@ class AudioSpeedControl extends StatelessWidget {
       initialData: service.state,
       builder: (context, snapshot) {
         final current = snapshot.data?.speed ?? 1.0;
-        return Row(
-          mainAxisSize: MainAxisSize.min,
+        return Wrap(
+          alignment: WrapAlignment.center,
+          runSpacing: 8,
           children: _speeds.map((speed) => _chip(context, service, speed, speed == current)).toList(),
         );
       },

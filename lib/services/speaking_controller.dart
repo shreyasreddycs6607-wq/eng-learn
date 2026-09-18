@@ -76,8 +76,6 @@ class SpeakingController extends ChangeNotifier {
 
   Future<void> stopSpeaking() => _speech.stopListening();
 
-  Future<void> cancelSpeaking() => _speech.cancel();
-
   /// Try again after Almost/Try Again/a recognition error — pre-submission
   /// retry is allowed and expected; this does not touch the practice
   /// engine's own (post-submission) retry rules.
@@ -171,6 +169,11 @@ class SpeakingController extends ChangeNotifier {
   void dispose() {
     _stateSub?.cancel();
     _resultsSub?.cancel();
+    // Leaving the screen mid-attempt must not leave the microphone open, or the
+    // shared recognizer stays "listening" and ignores the next screen's mic tap.
+    if (_speech.state == SpeechRecognitionState.listening || _speech.state == SpeechRecognitionState.processing) {
+      unawaited(_speech.cancel());
+    }
     super.dispose();
   }
 }

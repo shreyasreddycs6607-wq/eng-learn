@@ -37,11 +37,6 @@ void main() {
     expect(ExerciseAnswerFormatter.formatExpectedAnswer(exercise), 'I want water');
   });
 
-  test('formats a submitted (possibly wrong) OrderedOptionIdsAnswer the same way', () {
-    const submitted = OrderedOptionIdsAnswer(value: ['w1', 'w3', 'w2']);
-    expect(ExerciseAnswerFormatter.formatSubmittedAnswer(exercise, submitted), 'I water want');
-  });
-
   test('formats a TextAnswer as its literal value', () {
     const speaking = Exercise(
       id: 'E3',

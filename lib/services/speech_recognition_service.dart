@@ -15,6 +15,14 @@ class SpeechRecognitionService {
   final _resultsController = StreamController<RecognizedSpeech>.broadcast();
   SpeechRecognitionState _state = SpeechRecognitionState.idle;
   bool? _availableCache;
+  Timer? _watchdog;
+
+  /// Last-resort guards, independent of the platform plugin: a session that is
+  /// still "listening" after [listenTimeout], or still "checking" [stopTimeout]
+  /// after the learner stopped it, becomes an error, so the UI can never wait
+  /// forever for a result that is not coming. (Fields so tests can shorten them.)
+  Duration listenTimeout = const Duration(seconds: 15);
+  Duration stopTimeout = const Duration(seconds: 4);
 
   SpeechRecognitionService([SpeechBackend? backend]) : _backend = backend ?? SpeechToTextBackend();
 
@@ -59,6 +67,7 @@ class SpeechRecognitionService {
     }
 
     _emit(SpeechRecognitionState.listening);
+    _arm(listenTimeout);
     if (kDebugMode) debugPrint('[SPEECH] Listening started');
 
     final started = await _backend.listen(
@@ -88,6 +97,7 @@ class SpeechRecognitionService {
   Future<void> stopListening() async {
     if (_state != SpeechRecognitionState.listening) return;
     _emit(SpeechRecognitionState.processing);
+    _arm(stopTimeout);
     await _backend.stop();
   }
 
@@ -97,17 +107,27 @@ class SpeechRecognitionService {
     _emit(SpeechRecognitionState.idle);
   }
 
-  void resetToIdle() {
-    if (_state == SpeechRecognitionState.unavailable) return;
-    _emit(SpeechRecognitionState.idle);
+  void _arm(Duration timeout) {
+    _watchdog?.cancel();
+    _watchdog = Timer(timeout, () {
+      if (_state != SpeechRecognitionState.listening && _state != SpeechRecognitionState.processing) return;
+      if (kDebugMode) debugPrint('[SPEECH] No result before the timeout — giving up on this attempt');
+      unawaited(_backend.cancel());
+      _emit(SpeechRecognitionState.error);
+    });
   }
 
   void _emit(SpeechRecognitionState next) {
     _state = next;
+    if (next != SpeechRecognitionState.listening && next != SpeechRecognitionState.processing) {
+      _watchdog?.cancel();
+      _watchdog = null;
+    }
     _stateController.add(next);
   }
 
   Future<void> dispose() async {
+    _watchdog?.cancel();
     await _backend.dispose();
     await _stateController.close();
     await _resultsController.close();

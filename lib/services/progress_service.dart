@@ -60,7 +60,7 @@ class ProgressService {
     int streak;
     if (last == today) {
       streak = profile.streak;
-    } else if (last != null && today.difference(last).inDays == 1) {
+    } else if (last != null && today == DateTime(last.year, last.month, last.day + 1)) {
       streak = profile.streak + 1;
     } else {
       streak = 1;
@@ -72,15 +72,6 @@ class ProgressService {
       lastLearningDate: today,
     ));
     return streak;
-  }
-
-  Future<void> setCurrentLesson(String lessonId) async {
-    final profile = await _progress.loadProfile();
-    await _progress.saveProfile(UserProfile(
-      currentLessonId: lessonId,
-      streak: profile.streak,
-      lastLearningDate: profile.lastLearningDate,
-    ));
   }
 
   DateTime _dateOnly(DateTime dt) => DateTime(dt.year, dt.month, dt.day);

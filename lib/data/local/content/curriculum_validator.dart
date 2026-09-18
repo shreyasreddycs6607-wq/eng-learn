@@ -97,6 +97,7 @@ class CurriculumValidator {
     for (final l in lessons) {
       if (l.title.trim().isEmpty) errors.add('Lesson ${l.id} missing title');
       if (l.kannadaTitle.trim().isEmpty) errors.add('Lesson ${l.id} missing kannadaTitle');
+      if (l.contents.isEmpty) errors.add('Lesson ${l.id} has no content (a lesson screen needs at least one card)');
       _checkNoTelugu('Lesson ${l.id} kannadaTitle', l.kannadaTitle, errors);
     }
   }

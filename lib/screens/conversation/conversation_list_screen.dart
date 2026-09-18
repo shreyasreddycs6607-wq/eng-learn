@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/services/app_services.dart';
 import '../../core/theme/app_theme.dart';
@@ -48,7 +49,8 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
         _progress = {for (final p in progress) p.exerciseId: p};
         _loading = false;
       });
-    } catch (_) {
+    } catch (e) {
+      if (kDebugMode) debugPrint('[UI] Could not load: $e');
       if (mounted) {
         setState(() {
           _failed = true;
@@ -68,8 +70,13 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
     return ('Start', null);
   }
 
+  bool _opening = false;
+
   Future<void> _open(Conversation c) async {
+    if (_opening) return; // a double tap on a card must not open the conversation twice
+    _opening = true;
     await Navigator.of(context).push(MaterialPageRoute(builder: (_) => ConversationScreen(conversation: c)));
+    _opening = false;
     _load();
   }
 

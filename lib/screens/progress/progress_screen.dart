@@ -17,6 +17,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Map<String, LessonProgress> _progress = {};
   int _streak = 0;
   bool _loading = true;
+  bool _failed = false;
 
   @override
   void initState() {
@@ -25,16 +26,26 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Future<void> _load() async {
-    final lessons = await appServices.lessons.loadAll();
-    final progress = await appServices.progress.loadAllProgress();
-    final profile = await appServices.progress.loadProfile();
-    if (!mounted) return;
-    setState(() {
-      _lessons = lessons;
-      _progress = progress;
-      _streak = profile.streak;
-      _loading = false;
-    });
+    try {
+      final lessons = await appServices.lessons.loadAll();
+      final progress = await appServices.progress.loadAllProgress();
+      final profile = await appServices.progress.loadProfile();
+      if (!mounted) return;
+      setState(() {
+        _lessons = lessons;
+        _progress = progress;
+        _streak = profile.streak;
+        _loading = false;
+      });
+    } catch (e) {
+      if (kDebugMode) debugPrint('[PROGRESS] Could not load progress: $e');
+      if (mounted) {
+        setState(() {
+          _failed = true;
+          _loading = false;
+        });
+      }
+    }
   }
 
   Future<void> _resetProgress() async {
@@ -45,6 +56,18 @@ class _ProgressScreenState extends State<ProgressScreen> {
   @override
   Widget build(BuildContext context) {
     if (_loading) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (_failed) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Your Progress')),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Text("Couldn't load your progress. Please go back and try again.",
+                style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center),
+          ),
+        ),
+      );
+    }
 
     final completedLessons = _lessons.where((l) => _progress[l.id]?.completed == true);
     final wordsLearned = appServices.progress.totalWordsLearned(_lessons, _progress);
@@ -82,7 +105,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
             color: completed ? AppColors.correct : AppColors.textSecondary,
           ),
           const SizedBox(width: 12),
-          Text(title, style: Theme.of(context).textTheme.bodyLarge),
+          Expanded(child: Text(title, style: Theme.of(context).textTheme.bodyLarge)),
         ],
       ),
     );
