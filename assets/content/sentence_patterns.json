@@ -1,0 +1,172 @@
+{
+  "sentencePatterns": [
+    {
+      "id": "SP001",
+      "pattern": "My name is + name",
+      "kannadaPattern": "ನನ್ನ ಹೆಸರು + ಹೆಸರು",
+      "englishTemplate": "My name is {name}.",
+      "difficulty": 1,
+      "examples": [
+        { "id": "SE001", "kannada": "ನನ್ನ ಹೆಸರು ಲಕ್ಷ್ಮಿ.", "english": "My name is Lakshmi.", "englishAudio": "audio/english/my_name_is_lakshmi.mp3" },
+        { "id": "SE002", "kannada": "ನನ್ನ ಹೆಸರು ರಾಜು.", "english": "My name is Raju.", "englishAudio": "audio/english/my_name_is_raju.mp3" }
+      ]
+    },
+    {
+      "id": "SP002",
+      "pattern": "I am + state",
+      "kannadaPattern": "ನಾನು + ಸ್ಥಿತಿ + ಇದ್ದೇನೆ",
+      "englishTemplate": "I am {state}.",
+      "difficulty": 1,
+      "examples": [
+        { "id": "SE003", "kannada": "ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ.", "english": "I am fine.", "englishAudio": "audio/english/i_am_fine.mp3" },
+        { "id": "SE004", "kannada": "ನಾನು ಆಯಾಸಗೊಂಡಿದ್ದೇನೆ.", "english": "I am tired.", "englishAudio": "audio/english/i_am_tired.mp3" },
+        { "id": "SE005", "kannada": "ನಾನು ಸಂತೋಷವಾಗಿದ್ದೇನೆ.", "english": "I am happy.", "englishAudio": "audio/english/i_am_happy.mp3" }
+      ]
+    },
+    {
+      "id": "SP003",
+      "pattern": "I want + thing",
+      "kannadaPattern": "ನನಗೆ + ವಸ್ತು + ಬೇಕು",
+      "englishTemplate": "I want {thing}.",
+      "difficulty": 1,
+      "examples": [
+        { "id": "SE006", "kannada": "ನನಗೆ ನೀರು ಬೇಕು.", "english": "I want water.", "englishAudio": "audio/english/i_want_water.wav" },
+        { "id": "SE007", "kannada": "ನನಗೆ ಚಹಾ ಬೇಕು.", "english": "I want tea.", "englishAudio": "audio/english/i_want_tea.mp3" },
+        { "id": "SE008", "kannada": "ನನಗೆ ಊಟ ಬೇಕು.", "english": "I want food.", "englishAudio": "audio/english/i_want_food.mp3" }
+      ]
+    },
+    {
+      "id": "SP004",
+      "pattern": "I need + thing",
+      "kannadaPattern": "ನನಗೆ + ವಸ್ತು + ಬೇಕಾಗಿದೆ",
+      "englishTemplate": "I need {thing}.",
+      "difficulty": 2,
+      "examples": [
+        { "id": "SE009", "kannada": "ನನಗೆ ಸಹಾಯ ಬೇಕಾಗಿದೆ.", "english": "I need help.", "englishAudio": "audio/english/i_need_help.mp3" },
+        { "id": "SE010", "kannada": "ನನಗೆ ಔಷಧಿ ಬೇಕಾಗಿದೆ.", "english": "I need medicine.", "englishAudio": "audio/english/i_need_medicine.mp3" }
+      ]
+    },
+    {
+      "id": "SP005",
+      "pattern": "I have + thing",
+      "kannadaPattern": "ನನ್ನ ಬಳಿ + ವಸ್ತು + ಇದೆ",
+      "englishTemplate": "I have {thing}.",
+      "difficulty": 2,
+      "examples": [
+        { "id": "SE011", "kannada": "ನನ್ನ ಬಳಿ ಫೋನ್ ಇದೆ.", "english": "I have a phone.", "englishAudio": "audio/english/i_have_phone.mp3" },
+        { "id": "SE012", "kannada": "ನನ್ನ ಬಳಿ ಹಣ ಇದೆ.", "english": "I have money.", "englishAudio": "audio/english/i_have_money.mp3" }
+      ]
+    },
+    {
+      "id": "SP006",
+      "pattern": "I like + thing",
+      "kannadaPattern": "ನನಗೆ + ವಸ್ತು + ಇಷ್ಟ",
+      "englishTemplate": "I like {thing}.",
+      "difficulty": 1,
+      "examples": [
+        { "id": "SE013", "kannada": "ನನಗೆ ಚಹಾ ಇಷ್ಟ.", "english": "I like tea.", "englishAudio": "audio/english/i_like_tea.mp3" },
+        { "id": "SE014", "kannada": "ನನಗೆ ಅನ್ನ ಇಷ್ಟ.", "english": "I like rice.", "englishAudio": "audio/english/i_like_rice.mp3" }
+      ]
+    },
+    {
+      "id": "SP007",
+      "pattern": "I don't want + thing",
+      "kannadaPattern": "ನನಗೆ + ವಸ್ತು + ಬೇಡ",
+      "englishTemplate": "I don't want {thing}.",
+      "difficulty": 2,
+      "examples": [
+        { "id": "SE015", "kannada": "ನನಗೆ ಚಹಾ ಬೇಡ.", "english": "I don't want tea.", "englishAudio": "audio/english/i_dont_want_tea.mp3" },
+        { "id": "SE016", "kannada": "ನನಗೆ ಊಟ ಬೇಡ.", "english": "I don't want food.", "englishAudio": "audio/english/i_dont_want_food.mp3" }
+      ]
+    },
+    {
+      "id": "SP008",
+      "pattern": "I don't like + thing",
+      "kannadaPattern": "ನನಗೆ + ವಸ್ತು + ಇಷ್ಟ ಇಲ್ಲ",
+      "englishTemplate": "I don't like {thing}.",
+      "difficulty": 2,
+      "examples": [
+        { "id": "SE017", "kannada": "ನನಗೆ ಕಾಫಿ ಇಷ್ಟ ಇಲ್ಲ.", "english": "I don't like coffee.", "englishAudio": "audio/english/i_dont_like_coffee.mp3" },
+        { "id": "SE018", "kannada": "ನನಗೆ ಈ ಬಣ್ಣ ಇಷ್ಟ ಇಲ್ಲ.", "english": "I don't like this color.", "englishAudio": "audio/english/i_dont_like_this_color.mp3" }
+      ]
+    },
+    {
+      "id": "SP009",
+      "pattern": "Give me + thing",
+      "kannadaPattern": "ನನಗೆ + ವಸ್ತು + ಕೊಡು",
+      "englishTemplate": "Give me {thing}.",
+      "difficulty": 1,
+      "examples": [
+        { "id": "SE019", "kannada": "ನನಗೆ ನೀರು ಕೊಡು.", "english": "Give me water.", "englishAudio": "audio/english/give_me_water.mp3" },
+        { "id": "SE020", "kannada": "ನನಗೆ ಕಪ್ ಕೊಡು.", "english": "Give me a cup.", "englishAudio": "audio/english/give_me_cup.mp3" }
+      ]
+    },
+    {
+      "id": "SP010",
+      "pattern": "Please give me + thing",
+      "kannadaPattern": "ದಯವಿಟ್ಟು + ವಸ್ತು + ಕೊಡಿ",
+      "englishTemplate": "Please give me {thing}.",
+      "difficulty": 2,
+      "examples": [
+        { "id": "SE021", "kannada": "ದಯವಿಟ್ಟು ಫೋನ್ ಕೊಡಿ.", "english": "Please give me the phone.", "englishAudio": "audio/english/please_give_me_phone.mp3" },
+        { "id": "SE022", "kannada": "ದಯವಿಟ್ಟು ಒಂದು ಕಪ್ ಕೊಡಿ.", "english": "Please give me a cup.", "englishAudio": "audio/english/please_give_me_a_cup.mp3" }
+      ]
+    },
+    {
+      "id": "SP011",
+      "pattern": "This is + thing",
+      "kannadaPattern": "ಇದು + ವಸ್ತು",
+      "englishTemplate": "This is {thing}.",
+      "difficulty": 1,
+      "examples": [
+        { "id": "SE023", "kannada": "ಇದು ನನ್ನ ಪುಸ್ತಕ.", "english": "This is my book.", "englishAudio": "audio/english/this_is_my_book.mp3" },
+        { "id": "SE024", "kannada": "ಇದು ನೀರು.", "english": "This is water.", "englishAudio": "audio/english/this_is_water.mp3" }
+      ]
+    },
+    {
+      "id": "SP012",
+      "pattern": "That is + thing",
+      "kannadaPattern": "ಅದು + ವಸ್ತು",
+      "englishTemplate": "That is {thing}.",
+      "difficulty": 1,
+      "examples": [
+        { "id": "SE025", "kannada": "ಅದು ನನ್ನ ಮನೆ.", "english": "That is my house.", "englishAudio": "audio/english/that_is_my_house.mp3" },
+        { "id": "SE026", "kannada": "ಅದು ಅಂಗಡಿ.", "english": "That is a shop.", "englishAudio": "audio/english/that_is_a_shop.mp3" }
+      ]
+    },
+    {
+      "id": "SP013",
+      "pattern": "Where is + place/thing?",
+      "kannadaPattern": "+ ಎಲ್ಲಿದೆ?",
+      "englishTemplate": "Where is {thing}?",
+      "difficulty": 2,
+      "examples": [
+        { "id": "SE027", "kannada": "ಬಚ್ಚಲುಮನೆ ಎಲ್ಲಿದೆ?", "english": "Where is the bathroom?", "englishAudio": "audio/english/where_is_bathroom.mp3" },
+        { "id": "SE028", "kannada": "ನನ್ನ ಫೋನ್ ಎಲ್ಲಿದೆ?", "english": "Where is my phone?", "englishAudio": "audio/english/where_is_my_phone.mp3" },
+        { "id": "SE029", "kannada": "ಬಸ್ ನಿಲ್ದಾಣ ಎಲ್ಲಿದೆ?", "english": "Where is the bus stop?", "englishAudio": "audio/english/where_is_bus_stop.mp3" }
+      ]
+    },
+    {
+      "id": "SP014",
+      "pattern": "I am going + place",
+      "kannadaPattern": "ನಾನು + ಸ್ಥಳ + ಹೋಗುತ್ತಿದ್ದೇನೆ",
+      "englishTemplate": "I am going {place}.",
+      "difficulty": 2,
+      "examples": [
+        { "id": "SE030", "kannada": "ನಾನು ಮನೆಗೆ ಹೋಗುತ್ತಿದ್ದೇನೆ.", "english": "I am going home.", "englishAudio": "audio/english/i_am_going_home.mp3" },
+        { "id": "SE031", "kannada": "ನಾನು ಅಂಗಡಿಗೆ ಹೋಗುತ್ತಿದ್ದೇನೆ.", "english": "I am going to the shop.", "englishAudio": "audio/english/i_am_going_to_shop.mp3" }
+      ]
+    },
+    {
+      "id": "SP015",
+      "pattern": "How much is + thing?",
+      "kannadaPattern": "+ ಬೆಲೆ ಎಷ್ಟು?",
+      "englishTemplate": "How much is {thing}?",
+      "difficulty": 2,
+      "examples": [
+        { "id": "SE032", "kannada": "ಇದರ ಬೆಲೆ ಎಷ್ಟು?", "english": "How much is this?", "englishAudio": "audio/english/how_much_is_this.mp3" },
+        { "id": "SE033", "kannada": "ತರಕಾರಿ ಬೆಲೆ ಎಷ್ಟು?", "english": "How much is the vegetable?", "englishAudio": "audio/english/how_much_is_vegetable.mp3" }
+      ]
+    }
+  ]
+}

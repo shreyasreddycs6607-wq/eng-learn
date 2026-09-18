@@ -1,0 +1,507 @@
+{
+  "conversations": [
+    {
+      "id": "CONV001",
+      "category": "home",
+      "title": "At Home",
+      "kannadaTitle": "ಮನೆಯಲ್ಲಿ ಮಾತನಾಡುವುದು",
+      "kannadaSituation": "ನೀವು ಮನೆಯಲ್ಲಿ ಇದ್ದೀರಿ. ಮನೆಯವರು ನಿಮ್ಮ ಜೊತೆ ಮಾತನಾಡುತ್ತಾರೆ.",
+      "situation": "You are at home. Your family talks with you.",
+      "turns": [
+        {
+          "order": 1,
+          "speaker": "family",
+          "kannadaText": "ನಿಮಗೆ ಹಸಿವಾಗಿದೆಯೇ?",
+          "englishText": "Are you hungry?",
+          "audioPath": "audio/english/conv_are_you_hungry.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 2,
+          "speaker": "learner",
+          "kannadaText": "ಹೌದು, ನನಗೆ ಊಟ ಬೇಕು.",
+          "englishText": "Yes, I want food.",
+          "audioPath": "audio/english/conv_yes_i_want_food.wav",
+          "responseExerciseIds": [
+            "ECV0102C",
+            "ECV0102S"
+          ]
+        },
+        {
+          "order": 3,
+          "speaker": "family",
+          "kannadaText": "ನಿಮಗೆ ನೀರು ಬೇಕೇ?",
+          "englishText": "Do you want water?",
+          "audioPath": "audio/english/conv_do_you_want_water.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 4,
+          "speaker": "learner",
+          "kannadaText": "ದಯವಿಟ್ಟು ನನಗೆ ನೀರು ಕೊಡಿ.",
+          "englishText": "Please give me water.",
+          "audioPath": "audio/english/conv_please_give_me_water.wav",
+          "responseExerciseIds": [
+            "ECV0104C",
+            "ECV0104S"
+          ]
+        },
+        {
+          "order": 5,
+          "speaker": "family",
+          "kannadaText": "ತೆಗೆದುಕೊಳ್ಳಿ.",
+          "englishText": "Here you are.",
+          "audioPath": "audio/english/conv_here_you_are.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 6,
+          "speaker": "learner",
+          "kannadaText": "ಧನ್ಯವಾದ.",
+          "englishText": "Thank you.",
+          "audioPath": "audio/english/thank_you.wav",
+          "responseExerciseIds": [
+            "ECV0106C",
+            "ECV0106S"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CONV002",
+      "category": "family",
+      "title": "Family",
+      "kannadaTitle": "ಕುಟುಂಬದೊಂದಿಗೆ ಮಾತನಾಡುವುದು",
+      "kannadaSituation": "ನಿಮ್ಮ ಮಗು ನಿಮ್ಮನ್ನು ಮಾತನಾಡಿಸುತ್ತದೆ.",
+      "situation": "Your child talks with you.",
+      "turns": [
+        {
+          "order": 1,
+          "speaker": "child",
+          "kannadaText": "ನಮಸ್ಕಾರ, ಹೇಗಿದ್ದೀರಿ?",
+          "englishText": "Hello, how are you?",
+          "audioPath": "audio/english/conv_hello_how_are_you.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 2,
+          "speaker": "learner",
+          "kannadaText": "ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ.",
+          "englishText": "I am fine.",
+          "audioPath": "audio/english/conv_i_am_fine.wav",
+          "responseExerciseIds": [
+            "ECV0202C",
+            "ECV0202S"
+          ]
+        },
+        {
+          "order": 3,
+          "speaker": "child",
+          "kannadaText": "ನಿಮಗೆ ಚಹಾ ಇಷ್ಟವೇ?",
+          "englishText": "Do you like tea?",
+          "audioPath": "audio/english/conv_do_you_like_tea.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 4,
+          "speaker": "learner",
+          "kannadaText": "ಹೌದು, ನನಗೆ ಚಹಾ ಇಷ್ಟ.",
+          "englishText": "Yes, I like tea.",
+          "audioPath": "audio/english/conv_yes_i_like_tea.wav",
+          "responseExerciseIds": [
+            "ECV0204C",
+            "ECV0204S"
+          ]
+        },
+        {
+          "order": 5,
+          "speaker": "child",
+          "kannadaText": "ಸರಿ, ಒಳ್ಳೆಯದು!",
+          "englishText": "Okay, good!",
+          "audioPath": "audio/english/conv_okay_good.wav",
+          "responseExerciseIds": []
+        }
+      ]
+    },
+    {
+      "id": "CONV003",
+      "category": "shopping",
+      "title": "Shopping",
+      "kannadaTitle": "ಅಂಗಡಿಯಲ್ಲಿ ಸರಳವಾಗಿ ಮಾತನಾಡುವುದು",
+      "kannadaSituation": "ನೀವು ಅಂಗಡಿಯಲ್ಲಿ ಇದ್ದೀರಿ. ನಿಮಗೆ ಹಾಲು ಬೇಕು.",
+      "situation": "You are at a shop. You want milk.",
+      "turns": [
+        {
+          "order": 1,
+          "speaker": "shopkeeper",
+          "kannadaText": "ನಿಮಗೆ ಏನು ಬೇಕು?",
+          "englishText": "What do you want?",
+          "audioPath": "audio/english/conv_what_do_you_want.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 2,
+          "speaker": "learner",
+          "kannadaText": "ನನಗೆ ಹಾಲು ಬೇಕು.",
+          "englishText": "I want milk.",
+          "audioPath": "audio/english/conv_i_want_milk.wav",
+          "responseExerciseIds": [
+            "ECV0302C",
+            "ECV0302S"
+          ]
+        },
+        {
+          "order": 3,
+          "speaker": "shopkeeper",
+          "kannadaText": "ತೆಗೆದುಕೊಳ್ಳಿ.",
+          "englishText": "Here you are.",
+          "audioPath": "audio/english/conv_here_you_are.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 4,
+          "speaker": "learner",
+          "kannadaText": "ಇದರ ಬೆಲೆ ಎಷ್ಟು?",
+          "englishText": "How much is this?",
+          "audioPath": "audio/english/conv_how_much_is_this.wav",
+          "responseExerciseIds": [
+            "ECV0304C",
+            "ECV0304S"
+          ]
+        },
+        {
+          "order": 5,
+          "speaker": "shopkeeper",
+          "kannadaText": "ಹತ್ತು ರೂಪಾಯಿ.",
+          "englishText": "Ten rupees.",
+          "audioPath": "audio/english/conv_ten_rupees.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 6,
+          "speaker": "learner",
+          "kannadaText": "ಧನ್ಯವಾದ.",
+          "englishText": "Thank you.",
+          "audioPath": "audio/english/thank_you.wav",
+          "responseExerciseIds": [
+            "ECV0306C",
+            "ECV0306S"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CONV004",
+      "category": "phone",
+      "title": "Phone",
+      "kannadaTitle": "ಫೋನಿನಲ್ಲಿ ಮಾತನಾಡುವುದು",
+      "kannadaSituation": "ಸ್ನೇಹಿತರು ನಿಮಗೆ ಫೋನ್ ಮಾಡುತ್ತಾರೆ.",
+      "situation": "A friend calls you on the phone.",
+      "turns": [
+        {
+          "order": 1,
+          "speaker": "friend",
+          "kannadaText": "ನಮಸ್ಕಾರ, ಹೇಗಿದ್ದೀರಿ?",
+          "englishText": "Hello, how are you?",
+          "audioPath": "audio/english/conv_hello_how_are_you.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 2,
+          "speaker": "learner",
+          "kannadaText": "ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ, ಧನ್ಯವಾದ.",
+          "englishText": "I am fine, thank you.",
+          "audioPath": "audio/english/conv_i_am_fine_thank_you.wav",
+          "responseExerciseIds": [
+            "ECV0402C",
+            "ECV0402S"
+          ]
+        },
+        {
+          "order": 3,
+          "speaker": "friend",
+          "kannadaText": "ನೀವು ಮನೆಯಲ್ಲಿ ಇದ್ದೀರಾ?",
+          "englishText": "Are you at home?",
+          "audioPath": "audio/english/conv_are_you_at_home.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 4,
+          "speaker": "learner",
+          "kannadaText": "ಹೌದು, ನಾನು ಮನೆಯಲ್ಲಿ ಇದ್ದೇನೆ.",
+          "englishText": "Yes, I am at home.",
+          "audioPath": "audio/english/conv_yes_i_am_at_home.wav",
+          "responseExerciseIds": [
+            "ECV0404C",
+            "ECV0404S"
+          ]
+        },
+        {
+          "order": 5,
+          "speaker": "friend",
+          "kannadaText": "ಸರಿ. ನಾನು ನಂತರ ಕರೆ ಮಾಡುತ್ತೇನೆ.",
+          "englishText": "Okay. I will call you later.",
+          "audioPath": "audio/english/conv_okay_i_will_call_you_later.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 6,
+          "speaker": "learner",
+          "kannadaText": "ಸರಿ, ಹೋಗಿ ಬರುತ್ತೇನೆ.",
+          "englishText": "Okay, bye.",
+          "audioPath": "audio/english/conv_okay_bye.wav",
+          "responseExerciseIds": [
+            "ECV0406C",
+            "ECV0406S"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CONV005",
+      "category": "travel",
+      "title": "Travel",
+      "kannadaTitle": "ಪ್ರಯಾಣದಲ್ಲಿ ಮಾತನಾಡುವುದು",
+      "kannadaSituation": "ನೀವು ಬಸ್ಸಿನಲ್ಲಿ ಇದ್ದೀರಿ. ನೀವು ಮಾರುಕಟ್ಟೆಗೆ ಹೋಗುತ್ತಿದ್ದೀರಿ.",
+      "situation": "You are on a bus. You are going to the market.",
+      "turns": [
+        {
+          "order": 1,
+          "speaker": "conductor",
+          "kannadaText": "ನೀವು ಎಲ್ಲಿಗೆ ಹೋಗುತ್ತಿದ್ದೀರಿ?",
+          "englishText": "Where are you going?",
+          "audioPath": "audio/english/conv_where_are_you_going.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 2,
+          "speaker": "learner",
+          "kannadaText": "ನಾನು ಮಾರುಕಟ್ಟೆಗೆ ಹೋಗುತ್ತಿದ್ದೇನೆ.",
+          "englishText": "I am going to the market.",
+          "audioPath": "audio/english/conv_i_am_going_to_the_market.wav",
+          "responseExerciseIds": [
+            "ECV0502C",
+            "ECV0502S"
+          ]
+        },
+        {
+          "order": 3,
+          "speaker": "conductor",
+          "kannadaText": "ಹತ್ತು ರೂಪಾಯಿ, ದಯವಿಟ್ಟು.",
+          "englishText": "Ten rupees, please.",
+          "audioPath": "audio/english/conv_ten_rupees_please.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 4,
+          "speaker": "learner",
+          "kannadaText": "ತೆಗೆದುಕೊಳ್ಳಿ.",
+          "englishText": "Here you are.",
+          "audioPath": "audio/english/conv_here_you_are.wav",
+          "responseExerciseIds": [
+            "ECV0504C",
+            "ECV0504S"
+          ]
+        },
+        {
+          "order": 5,
+          "speaker": "conductor",
+          "kannadaText": "ಸರಿ. ಇದು ಮಾರುಕಟ್ಟೆ.",
+          "englishText": "Okay. This is the market.",
+          "audioPath": "audio/english/conv_okay_this_is_the_market.wav",
+          "responseExerciseIds": []
+        }
+      ]
+    },
+    {
+      "id": "CONV006",
+      "category": "doctor",
+      "title": "Doctor",
+      "kannadaTitle": "ಆಸ್ಪತ್ರೆಯಲ್ಲಿ ಮಾತನಾಡುವುದು",
+      "kannadaSituation": "ನೀವು ಆಸ್ಪತ್ರೆಯಲ್ಲಿ ಡಾಕ್ಟರ್ ಬಳಿ ಇದ್ದೀರಿ.",
+      "situation": "You are at the hospital with the doctor.",
+      "turns": [
+        {
+          "order": 1,
+          "speaker": "doctor",
+          "kannadaText": "ನಿಮಗೆ ಹೇಗಿದೆ?",
+          "englishText": "How are you?",
+          "audioPath": "audio/english/conv_how_are_you.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 2,
+          "speaker": "learner",
+          "kannadaText": "ನಾನು ಆಯಾಸಗೊಂಡಿದ್ದೇನೆ.",
+          "englishText": "I am tired.",
+          "audioPath": "audio/english/conv_i_am_tired.wav",
+          "responseExerciseIds": [
+            "ECV0602C",
+            "ECV0602S"
+          ]
+        },
+        {
+          "order": 3,
+          "speaker": "doctor",
+          "kannadaText": "ನಿಮಗೆ ಔಷಧಿ ಬೇಕೇ?",
+          "englishText": "Do you need medicine?",
+          "audioPath": "audio/english/conv_do_you_need_medicine.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 4,
+          "speaker": "learner",
+          "kannadaText": "ಹೌದು, ನನಗೆ ಔಷಧಿ ಬೇಕಾಗಿದೆ.",
+          "englishText": "Yes, I need medicine.",
+          "audioPath": "audio/english/conv_yes_i_need_medicine.wav",
+          "responseExerciseIds": [
+            "ECV0604C",
+            "ECV0604S"
+          ]
+        },
+        {
+          "order": 5,
+          "speaker": "doctor",
+          "kannadaText": "ಇಲ್ಲಿದೆ ನಿಮ್ಮ ಔಷಧಿ.",
+          "englishText": "Here is your medicine.",
+          "audioPath": "audio/english/conv_here_is_your_medicine.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 6,
+          "speaker": "learner",
+          "kannadaText": "ಧನ್ಯವಾದ, ಡಾಕ್ಟರ್.",
+          "englishText": "Thank you, doctor.",
+          "audioPath": "audio/english/conv_thank_you_doctor.wav",
+          "responseExerciseIds": [
+            "ECV0606C",
+            "ECV0606S"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CONV007",
+      "category": "neighbour",
+      "title": "Neighbour",
+      "kannadaTitle": "ನೆರೆಮನೆಯವರ ಜೊತೆ ಮಾತನಾಡುವುದು",
+      "kannadaSituation": "ಬೆಳಿಗ್ಗೆ ನಿಮ್ಮ ನೆರೆಮನೆಯವರು ಸಿಗುತ್ತಾರೆ.",
+      "situation": "You meet your neighbour in the morning.",
+      "turns": [
+        {
+          "order": 1,
+          "speaker": "neighbour",
+          "kannadaText": "ಶುಭೋದಯ!",
+          "englishText": "Good morning!",
+          "audioPath": "audio/english/conv_good_morning.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 2,
+          "speaker": "learner",
+          "kannadaText": "ಶುಭೋದಯ! ಹೇಗಿದ್ದೀರಿ?",
+          "englishText": "Good morning! How are you?",
+          "audioPath": "audio/english/conv_good_morning_how_are_you.wav",
+          "responseExerciseIds": [
+            "ECV0702C",
+            "ECV0702S"
+          ]
+        },
+        {
+          "order": 3,
+          "speaker": "neighbour",
+          "kannadaText": "ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ. ನೀವು ಎಲ್ಲಿಗೆ ಹೋಗುತ್ತಿದ್ದೀರಿ?",
+          "englishText": "I am fine. Where are you going?",
+          "audioPath": "audio/english/conv_i_am_fine_where_are_you_going.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 4,
+          "speaker": "learner",
+          "kannadaText": "ನಾನು ಅಂಗಡಿಗೆ ಹೋಗುತ್ತಿದ್ದೇನೆ.",
+          "englishText": "I am going to the shop.",
+          "audioPath": "audio/english/conv_i_am_going_to_the_shop.wav",
+          "responseExerciseIds": [
+            "ECV0704C",
+            "ECV0704S"
+          ]
+        },
+        {
+          "order": 5,
+          "speaker": "neighbour",
+          "kannadaText": "ಸರಿ. ಹೋಗಿ ಬನ್ನಿ!",
+          "englishText": "Okay. Bye!",
+          "audioPath": "audio/english/conv_okay_bye.wav",
+          "responseExerciseIds": []
+        }
+      ]
+    },
+    {
+      "id": "CONV008",
+      "category": "food",
+      "title": "Ordering Food",
+      "kannadaTitle": "ಹೋಟೆಲ್‌ನಲ್ಲಿ ಊಟ ಆರ್ಡರ್ ಮಾಡುವುದು",
+      "kannadaSituation": "ನೀವು ಹೋಟೆಲ್‌ನಲ್ಲಿ ಇದ್ದೀರಿ. ನೀವು ಚಹಾ ಕೇಳುತ್ತೀರಿ.",
+      "situation": "You are at a restaurant. You ask for tea.",
+      "turns": [
+        {
+          "order": 1,
+          "speaker": "waiter",
+          "kannadaText": "ಶುಭ ಸಂಜೆ. ನಿಮಗೆ ಏನು ಬೇಕು?",
+          "englishText": "Good evening. What would you like?",
+          "audioPath": "audio/english/conv_good_evening_what_would_you_like.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 2,
+          "speaker": "learner",
+          "kannadaText": "ನನಗೆ ಚಹಾ ಬೇಕು.",
+          "englishText": "I want tea.",
+          "audioPath": "audio/english/conv_i_want_tea.wav",
+          "responseExerciseIds": [
+            "ECV0802C",
+            "ECV0802S"
+          ]
+        },
+        {
+          "order": 3,
+          "speaker": "waiter",
+          "kannadaText": "ನಿಮಗೆ ಊಟ ಬೇಕೇ?",
+          "englishText": "Do you want food?",
+          "audioPath": "audio/english/conv_do_you_want_food.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 4,
+          "speaker": "learner",
+          "kannadaText": "ಇಲ್ಲ, ಧನ್ಯವಾದ.",
+          "englishText": "No, thank you.",
+          "audioPath": "audio/english/conv_no_thank_you.wav",
+          "responseExerciseIds": [
+            "ECV0804C",
+            "ECV0804S"
+          ]
+        },
+        {
+          "order": 5,
+          "speaker": "waiter",
+          "kannadaText": "ಇಲ್ಲಿದೆ ನಿಮ್ಮ ಚಹಾ.",
+          "englishText": "Here is your tea.",
+          "audioPath": "audio/english/conv_here_is_your_tea.wav",
+          "responseExerciseIds": []
+        },
+        {
+          "order": 6,
+          "speaker": "learner",
+          "kannadaText": "ಧನ್ಯವಾದ.",
+          "englishText": "Thank you.",
+          "audioPath": "audio/english/thank_you.wav",
+          "responseExerciseIds": [
+            "ECV0806C",
+            "ECV0806S"
+          ]
+        }
+      ]
+    }
+  ]
+}

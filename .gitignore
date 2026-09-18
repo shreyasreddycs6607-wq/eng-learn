@@ -1,0 +1,9 @@
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+.idea/
+*.iml
+android/local.properties
+ios/Flutter/flutter_export_environment.sh
+pubspec.lock

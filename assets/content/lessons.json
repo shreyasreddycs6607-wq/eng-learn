@@ -1,0 +1,93 @@
+{
+  "lessons": [
+    { "id": "L001", "level": 1, "order": 1, "topic": "greetings", "title": "Hello & Goodbye", "kannadaTitle": "ನಮಸ್ಕಾರ ಮತ್ತು ವಿದಾಯ", "description": "Learn simple English greetings.", "estimatedMinutes": 6,
+      "vocabularyIds": ["V001","V002","V003","V004","V005","V006"], "sentencePatternIds": [], "exerciseIds": ["E00101","E00102","E00103","E00104"], "contentIds": ["C00101","C00102","C00103","C00104","C00105","C00106"] },
+
+    { "id": "L002", "level": 1, "order": 2, "topic": "basics", "title": "Yes, No, Okay", "kannadaTitle": "ಹೌದು, ಇಲ್ಲ, ಸರಿ", "description": "Learn basic everyday responses.", "estimatedMinutes": 6,
+      "vocabularyIds": ["V007","V008","V009","V010","V011"], "sentencePatternIds": [], "exerciseIds": ["E00201","E00202","E00203","E00204"], "contentIds": ["C00201","C00202","C00203","C00204","C00205"] },
+
+    { "id": "L003", "level": 1, "order": 3, "topic": "people", "title": "I & You", "kannadaTitle": "ನಾನು ಮತ್ತು ನೀನು", "description": "Learn basic pronouns.", "estimatedMinutes": 6,
+      "vocabularyIds": ["V012","V013","V014","V015","V016"], "sentencePatternIds": [], "exerciseIds": ["E00301","E00302","E00303","E00304"], "contentIds": ["C00301","C00302","C00303","C00304","C00305"] },
+
+    { "id": "L004", "level": 1, "order": 4, "topic": "people", "title": "My Name", "kannadaTitle": "ನನ್ನ ಹೆಸರು", "description": "Learn to say and ask for names.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V017"], "sentencePatternIds": ["SP001"], "exerciseIds": ["E00401","E00402","E00403","E00404"], "contentIds": ["C00401","C00402","C00403"] },
+
+    { "id": "L005", "level": 1, "order": 5, "topic": "numbers", "title": "Numbers", "kannadaTitle": "ಸಂಖ್ಯೆಗಳು", "description": "Learn to count from one to ten.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V018","V019","V020","V021","V022","V023","V024","V025","V026","V027"], "sentencePatternIds": [], "exerciseIds": ["E00501","E00502","E00503","E00504"], "contentIds": ["C00501","C00502","C00503","C00504","C00505","C00506","C00507","C00508","C00509","C00510"] },
+
+    { "id": "L006", "level": 1, "order": 6, "topic": "family", "title": "Family", "kannadaTitle": "ಕುಟುಂಬ", "description": "Learn family member words.", "estimatedMinutes": 8,
+      "vocabularyIds": ["V028","V029","V030","V031","V032","V033","V034","V035","V036"], "sentencePatternIds": [], "exerciseIds": ["E00601","E00602","E00603","E00604","E00605"], "contentIds": ["C00601","C00602","C00603","C00604","C00605","C00606","C00607","C00608","C00609","C00610"] },
+
+    { "id": "L007", "level": 1, "order": 7, "topic": "home", "title": "Home", "kannadaTitle": "ಮನೆ", "description": "Learn words for rooms and furniture.", "estimatedMinutes": 8,
+      "vocabularyIds": ["V037","V038","V039","V040","V041","V042","V043","V044","V045","V046"], "sentencePatternIds": [], "exerciseIds": ["E00701","E00702","E00703","E00704","E00705"], "contentIds": ["C00701","C00702","C00703","C00704","C00705","C00706","C00707","C00708","C00709","C00710"] },
+
+    { "id": "L008", "level": 1, "order": 8, "topic": "objects", "title": "Common Objects", "kannadaTitle": "ಸಾಮಾನ್ಯ ವಸ್ತುಗಳು", "description": "Learn everyday object words.", "estimatedMinutes": 8,
+      "vocabularyIds": ["V047","V048","V049","V050","V051","V052","V053","V054","V055","V056"], "sentencePatternIds": [], "exerciseIds": ["E00801","E00802","E00803","E00804","E00805"], "contentIds": ["C00801","C00802","C00803","C00804","C00805","C00806","C00807","C00808","C00809","C00810","C00811"] },
+
+    { "id": "L009", "level": 1, "order": 9, "topic": "food_drink", "title": "Food", "kannadaTitle": "ಆಹಾರ", "description": "Learn basic food words.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V057","V058","V059","V060","V061","V062","V063","V064","V065"], "sentencePatternIds": [], "exerciseIds": ["E00901","E00902","E00903","E00904"], "contentIds": ["C00901","C00902","C00903","C00904","C00905","C00906","C00907","C00908","C00909","C00910"] },
+
+    { "id": "L010", "level": 1, "order": 10, "topic": "food_drink", "title": "Drinks", "kannadaTitle": "ಪಾನೀಯಗಳು", "description": "Learn basic drink words.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V066","V067","V068","V069","V070"], "sentencePatternIds": [], "exerciseIds": ["E01001","E01002","E01003","E01004","E01005"], "contentIds": ["C01001","C01002","C01003","C01004","C01005","C01006"] },
+
+    { "id": "L011", "level": 1, "order": 11, "topic": "body", "title": "Body", "kannadaTitle": "ದೇಹ", "description": "Learn basic body part words.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V071","V072","V073","V074","V075","V076","V077","V078"], "sentencePatternIds": [], "exerciseIds": ["E01101","E01102","E01103","E01104"], "contentIds": ["C01101","C01102","C01103","C01104","C01105","C01106","C01107","C01108"] },
+
+    { "id": "L012", "level": 1, "order": 12, "topic": "colors", "title": "Colors", "kannadaTitle": "ಬಣ್ಣಗಳು", "description": "Learn basic color words.", "estimatedMinutes": 6,
+      "vocabularyIds": ["V079","V080","V081","V082","V083","V084"], "sentencePatternIds": [], "exerciseIds": ["E01201","E01202","E01203","E01204"], "contentIds": ["C01201","C01202","C01203","C01204","C01205","C01206","C01207"] },
+
+    { "id": "L013", "level": 1, "order": 13, "topic": "basic_actions", "title": "Basic Actions", "kannadaTitle": "ಮೂಲ ಕ್ರಿಯೆಗಳು", "description": "Learn common action words.", "estimatedMinutes": 8,
+      "vocabularyIds": ["V085","V086","V087","V088","V089","V090","V091","V092","V093","V094"], "sentencePatternIds": [], "exerciseIds": ["E01301","E01302","E01303","E01304","E01305"], "contentIds": ["C01301","C01302","C01303","C01304","C01305","C01306","C01307","C01308","C01309","C01310","C01311"] },
+
+    { "id": "L014", "level": 1, "order": 14, "topic": "time_days", "title": "Time & Days", "kannadaTitle": "ಸಮಯ ಮತ್ತು ದಿನಗಳು", "description": "Learn time words and days of the week.", "estimatedMinutes": 9,
+      "vocabularyIds": ["V095","V096","V097","V098","V099","V100","V101","V102","V103","V104","V105","V106","V107"], "sentencePatternIds": [], "exerciseIds": ["E01401","E01402","E01403","E01404"], "contentIds": ["C01401","C01402","C01403","C01404","C01405","C01406","C01407","C01408","C01409","C01410","C01411","C01412","C01413"] },
+
+    { "id": "L015", "level": 1, "order": 15, "topic": "places", "title": "Places", "kannadaTitle": "ಸ್ಥಳಗಳು", "description": "Learn common everyday places.", "estimatedMinutes": 8,
+      "vocabularyIds": ["V108","V109","V110","V111","V112","V113","V114","V115"], "sentencePatternIds": [], "exerciseIds": ["E01501","E01502","E01503","E01504"], "contentIds": ["C01501","C01502","C01503","C01504","C01505","C01506","C01507","C01508","C01509"] },
+
+    { "id": "L016", "level": 2, "order": 16, "topic": "feelings", "title": "I Am", "kannadaTitle": "ನಾನು ಇದ್ದೇನೆ", "description": "Learn to describe how you feel.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V116","V117","V118"], "sentencePatternIds": ["SP002"], "exerciseIds": ["E01601","E01602","E01603","E01604"], "contentIds": ["C01601","C01602","C01603","C01604","C01605"] },
+
+    { "id": "L017", "level": 2, "order": 17, "topic": "requests", "title": "I Want", "kannadaTitle": "ನನಗೆ ಬೇಕು", "description": "Learn how to say what you want.", "estimatedMinutes": 8,
+      "vocabularyIds": ["V119"], "sentencePatternIds": ["SP003"], "exerciseIds": ["E01701","E01702","E01703","E01704","E01705","E01706"], "contentIds": ["C01701","C01702","C01703"] },
+
+    { "id": "L018", "level": 2, "order": 18, "topic": "requests", "title": "I Need", "kannadaTitle": "ನನಗೆ ಬೇಕಾಗಿದೆ", "description": "Learn how to ask for necessities.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V120","V121","V137"], "sentencePatternIds": ["SP004"], "exerciseIds": ["E01801","E01802","E01803","E01804"], "contentIds": ["C01801","C01802","C01803","C01804"] },
+
+    { "id": "L019", "level": 2, "order": 19, "topic": "possessions", "title": "I Have", "kannadaTitle": "ನನ್ನ ಬಳಿ ಇದೆ", "description": "Learn to talk about what you have.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V122","V123","V124"], "sentencePatternIds": ["SP005"], "exerciseIds": ["E01901","E01902","E01903"], "contentIds": ["C01901","C01902","C01903","C01904"] },
+
+    { "id": "L020", "level": 2, "order": 20, "topic": "preferences", "title": "I Like", "kannadaTitle": "ನನಗೆ ಇಷ್ಟ", "description": "Learn to talk about preferences.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V125","V126"], "sentencePatternIds": ["SP006"], "exerciseIds": ["E02001","E02002","E02003"], "contentIds": ["C02001","C02002","C02003"] },
+
+    { "id": "L021", "level": 2, "order": 21, "topic": "preferences", "title": "I Don't Want / Don't Like", "kannadaTitle": "ನನಗೆ ಬೇಡ / ಇಷ್ಟ ಇಲ್ಲ", "description": "Learn simple negative sentences.", "estimatedMinutes": 7,
+      "vocabularyIds": [], "sentencePatternIds": ["SP007","SP008"], "exerciseIds": ["E02101","E02102","E02103"], "contentIds": ["C02101","C02102","C02103"] },
+
+    { "id": "L022", "level": 2, "order": 22, "topic": "requests", "title": "Give Me / Please", "kannadaTitle": "ನನಗೆ ಕೊಡು / ದಯವಿಟ್ಟು", "description": "Learn polite requests.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V128","V129"], "sentencePatternIds": ["SP009","SP010"], "exerciseIds": ["E02201","E02202","E02203"], "contentIds": ["C02201","C02202","C02203","C02204"] },
+
+    { "id": "L023", "level": 2, "order": 23, "topic": "commands", "title": "Come / Go / Sit / Stand", "kannadaTitle": "ಬಾ / ಹೋಗು / ಕೂಡು / ನಿಲ್ಲು", "description": "Learn common commands and requests.", "estimatedMinutes": 7,
+      "vocabularyIds": [], "sentencePatternIds": [], "exerciseIds": ["E02301","E02302","E02303","E02304"], "contentIds": ["C02301","C02302","C02303","C02304","C02305"] },
+
+    { "id": "L024", "level": 2, "order": 24, "topic": "questions", "title": "What Is This?", "kannadaTitle": "ಇದೇನು?", "description": "Learn to ask and answer about objects.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V130","V131"], "sentencePatternIds": ["SP011","SP012"], "exerciseIds": ["E02401","E02402","E02403"], "contentIds": ["C02401","C02402","C02403","C02404"] },
+
+    { "id": "L025", "level": 2, "order": 25, "topic": "questions", "title": "Where Is...?", "kannadaTitle": "ಎಲ್ಲಿದೆ?", "description": "Learn to ask where things are.", "estimatedMinutes": 7,
+      "vocabularyIds": ["V132"], "sentencePatternIds": ["SP013"], "exerciseIds": ["E02501","E02502","E02503"], "contentIds": ["C02501","C02502","C02503"] },
+
+    { "id": "L026", "level": 3, "order": 26, "topic": "home", "title": "At Home", "kannadaTitle": "ಮನೆಯಲ್ಲಿ", "description": "Practice a short conversation at home.", "estimatedMinutes": 8,
+      "vocabularyIds": ["V133"], "sentencePatternIds": [], "exerciseIds": ["E02601","E02602","E02603"], "contentIds": ["C02601","C02602","C02603"] },
+
+    { "id": "L027", "level": 3, "order": 27, "topic": "shopping", "title": "Shopping", "kannadaTitle": "ಶಾಪಿಂಗ್", "description": "Practice a short shopping conversation.", "estimatedMinutes": 8,
+      "vocabularyIds": [], "sentencePatternIds": ["SP015"], "exerciseIds": ["E02701","E02702","E02703"], "contentIds": ["C02701","C02702","C02703"] },
+
+    { "id": "L028", "level": 3, "order": 28, "topic": "phone_conversation", "title": "Phone Conversation", "kannadaTitle": "ಫೋನ್ ಸಂಭಾಷಣೆ", "description": "Practice a short phone conversation.", "estimatedMinutes": 8,
+      "vocabularyIds": ["V134","V135"], "sentencePatternIds": [], "exerciseIds": ["E02801","E02802","E02803"], "contentIds": ["C02801","C02802","C02803","C02804"] },
+
+    { "id": "L029", "level": 3, "order": 29, "topic": "travel", "title": "Travelling", "kannadaTitle": "ಪ್ರಯಾಣ", "description": "Practice travel-related phrases.", "estimatedMinutes": 8,
+      "vocabularyIds": ["V136"], "sentencePatternIds": ["SP014"], "exerciseIds": ["E02901","E02902","E02903"], "contentIds": ["C02901","C02902","C02903"] },
+
+    { "id": "L030", "level": 3, "order": 30, "topic": "review", "title": "Everyday Conversation", "kannadaTitle": "ದೈನಂದಿನ ಸಂಭಾಷಣೆ", "description": "Review and combine everything you've learned.", "estimatedMinutes": 9,
+      "vocabularyIds": [], "sentencePatternIds": [], "exerciseIds": ["E03001","E03002","E03003","E03004"], "contentIds": ["C03001","C03002","C03003"] }
+  ]
+}
