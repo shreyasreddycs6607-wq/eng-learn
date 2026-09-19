@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/services/app_services.dart';
+import '../../core/theme/app_theme.dart';
 import '../../models/conversation.dart';
 import '../../models/exercise_answer.dart';
 import '../../models/feedback_type.dart';
@@ -12,9 +13,11 @@ import '../../widgets/audio_speed_control.dart';
 import '../../widgets/exercise/exercise_view.dart';
 import '../../widgets/feedback_card.dart';
 import '../../widgets/lesson_header.dart';
+import '../../widgets/message_view.dart';
 import '../../widgets/microphone_button.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
+import 'conversation_style.dart';
 
 /// One guided mini-conversation: situation -> turns -> complete. All checking,
 /// speaking evaluation and progress recording happen in ConversationController
@@ -82,7 +85,16 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget build(BuildContext context) {
     final controller = _controller;
     if (_failed) {
-      return _messageScaffold(context, title: "Couldn't load this conversation", body: 'Please go back and try again.', button: 'Back', onPressed: () => Navigator.of(context).pop());
+      return _messageScaffold(
+        context,
+        title: "Couldn't load this conversation",
+        body: 'Please go back and try again.',
+        button: 'Back',
+        icon: Icons.error_outline_rounded,
+        foreground: AppColors.incorrect,
+        background: AppColors.incorrectSoft,
+        onPressed: () => Navigator.of(context).pop(),
+      );
     }
     if (controller == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     if (!_started) return _intro(context);
@@ -95,11 +107,15 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   Widget _intro(BuildContext context) {
     final c = widget.conversation;
+    final style = ConversationStyle.of(c.category);
     return _messageScaffold(
       context,
       title: c.title,
       body: '${c.kannadaSituation}\n\n${c.situation}',
       button: 'Start',
+      icon: style.icon,
+      foreground: style.foreground,
+      background: style.background,
       onPressed: () => setState(() => _started = true),
     );
   }
@@ -112,6 +128,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
       title: 'Conversation Complete!',
       body: 'You practiced:\n$said$revisit',
       button: 'Done',
+      icon: Icons.emoji_events_rounded,
+      foreground: AppColors.almost,
+      background: AppColors.accentSoft,
       onPressed: () => Navigator.of(context).pop(),
       secondary: SecondaryButton(
         label: 'Practice Again',
@@ -122,35 +141,26 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 
-  Widget _messageScaffold(BuildContext context,
-      {required String title, required String body, required String button, required VoidCallback onPressed, Widget? secondary}) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(title, style: Theme.of(context).textTheme.displayMedium, textAlign: TextAlign.center),
-                        const SizedBox(height: 16),
-                        Text(body, style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              PrimaryButton(label: button, onPressed: onPressed),
-              if (secondary != null) ...[const SizedBox(height: 12), secondary],
-            ],
-          ),
-        ),
-      ),
+  Widget _messageScaffold(
+    BuildContext context, {
+    required String title,
+    required String body,
+    required String button,
+    required IconData icon,
+    required Color foreground,
+    required Color background,
+    required VoidCallback onPressed,
+    Widget? secondary,
+  }) {
+    return MessageView(
+      icon: icon,
+      iconColor: foreground,
+      iconBackground: background,
+      title: title,
+      body: body,
+      primaryLabel: button,
+      onPrimary: onPressed,
+      secondary: secondary,
     );
   }
 
@@ -163,7 +173,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppSpacing.screen),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -206,10 +216,15 @@ class _ConversationScreenState extends State<ConversationScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (previous != null && !previous.isLearner) _bubble(context, previous),
-                const SizedBox(height: 16),
-                Text(exercise.kannadaText ?? '', style: Theme.of(context).textTheme.headlineMedium),
-                const SizedBox(height: 4),
-                Text('What do you say?', style: Theme.of(context).textTheme.bodyMedium),
+                const SizedBox(height: 18),
+                Text('What do you say?', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(color: AppColors.primarySoft, borderRadius: BorderRadius.circular(18)),
+                  child: Text(exercise.kannadaText ?? '', style: Theme.of(context).textTheme.headlineSmall),
+                ),
               ],
             ),
           ),
@@ -326,29 +341,68 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 
-  /// Speaker, English line (with Listen), and its Kannada meaning.
+  /// A chat bubble: the speaker's line in English (with Listen) and its Kannada
+  /// meaning. The learner's own lines sit on the right in the brand colour.
   Widget _bubble(BuildContext context, ConversationTurn turn) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(speakerLabels[turn.speaker] ?? '', style: Theme.of(context).textTheme.bodyMedium),
-                  const SizedBox(height: 4),
-                  Text(turn.englishText, style: Theme.of(context).textTheme.headlineMedium),
-                  const SizedBox(height: 4),
-                  Text(turn.kannadaText, style: Theme.of(context).textTheme.bodyLarge),
-                ],
-              ),
-            ),
-            if (turn.audioPath != null) AudioPlayerButton(audioPath: turn.audioPath, label: 'audio', size: 56),
-          ],
+    final text = Theme.of(context).textTheme;
+    final learner = turn.isLearner;
+    final name = speakerLabels[turn.speaker] ?? '';
+    const big = Radius.circular(24);
+    const small = Radius.circular(6);
+    final bubble = Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: learner ? AppColors.primarySoft : AppColors.surface,
+        borderRadius: BorderRadius.only(
+          topLeft: learner ? big : small,
+          topRight: learner ? small : big,
+          bottomLeft: big,
+          bottomRight: big,
         ),
+        border: Border.all(color: learner ? AppColors.primary.withValues(alpha: 0.25) : AppColors.border),
+        boxShadow: const [BoxShadow(color: Color(0x0D0E3B33), blurRadius: 14, offset: Offset(0, 6))],
       ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(turn.englishText, style: text.headlineSmall),
+                const SizedBox(height: 4),
+                Text(turn.kannadaText, style: text.bodyLarge?.copyWith(color: AppColors.textSecondary)),
+              ],
+            ),
+          ),
+          if (turn.audioPath != null) ...[
+            const SizedBox(width: 12),
+            AudioPlayerButton(audioPath: turn.audioPath, label: 'audio', size: 56),
+          ],
+        ],
+      ),
+    );
+    return Column(
+      crossAxisAlignment: learner ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6, left: 4, right: 4),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 28,
+                height: 28,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(shape: BoxShape.circle, color: learner ? AppColors.primary : AppColors.accent),
+                child: Text(name.isEmpty ? '' : name[0], style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: Colors.white)),
+              ),
+              const SizedBox(width: 8),
+              Text(name, style: text.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
+            ],
+          ),
+        ),
+        FractionallySizedBox(widthFactor: 0.94, child: bubble),
+      ],
     );
   }
 }

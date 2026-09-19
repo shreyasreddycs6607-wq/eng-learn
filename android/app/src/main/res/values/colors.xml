@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Deep teal behind the adaptive launcher icon. -->
+    <color name="ic_launcher_background">#0E6B5C</color>
+    <!-- The app's ivory paper colour, so the launch screen matches the first screen. -->
+    <color name="launch_background">#FBF7F0</color>
+</resources>

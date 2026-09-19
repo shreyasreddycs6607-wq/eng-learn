@@ -4,7 +4,10 @@ import '../../core/services/app_services.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/conversation.dart';
 import '../../models/exercise_progress.dart';
+import '../../widgets/icon_badge.dart';
+import '../../widgets/soft_card.dart';
 import 'conversation_screen.dart';
+import 'conversation_style.dart';
 
 /// Real-Life Practice: the fixed list of situations. Whether one was
 /// practiced / is due for review is derived from the existing per-exercise
@@ -17,17 +20,6 @@ class ConversationListScreen extends StatefulWidget {
 }
 
 class _ConversationListScreenState extends State<ConversationListScreen> {
-  static const _icons = {
-    ConversationCategory.home: Icons.home_rounded,
-    ConversationCategory.family: Icons.family_restroom_rounded,
-    ConversationCategory.shopping: Icons.shopping_cart_rounded,
-    ConversationCategory.phone: Icons.phone_rounded,
-    ConversationCategory.travel: Icons.directions_bus_rounded,
-    ConversationCategory.doctor: Icons.local_hospital_rounded,
-    ConversationCategory.neighbour: Icons.people_rounded,
-    ConversationCategory.food: Icons.restaurant_rounded,
-  };
-
   List<Conversation> _conversations = [];
   Map<String, ExerciseProgress> _progress = {};
   bool _loading = true;
@@ -62,12 +54,12 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
 
   /// "Review" when something in it is due, a check once every reply has been
   /// tried, otherwise "Start".
-  (String, IconData?) _status(Conversation c) {
+  (String, Color, Color, IconData?) _status(Conversation c) {
     final now = DateTime.now();
     final items = c.responseExerciseIds.map((id) => _progress[id]).toList();
-    if (items.any((p) => p != null && p.isDueBy(now))) return ('Review', null);
-    if (items.every((p) => p != null)) return ('Practice again', Icons.check_circle_rounded);
-    return ('Start', null);
+    if (items.any((p) => p != null && p.isDueBy(now))) return ('Review', AppColors.almost, AppColors.accentSoft, null);
+    if (items.every((p) => p != null)) return ('Practice again', AppColors.correct, AppColors.correctSoft, Icons.check_rounded);
+    return ('Start', AppColors.primary, AppColors.primarySoft, null);
   }
 
   bool _opening = false;
@@ -105,36 +97,48 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
   }
 
   Widget _card(BuildContext context, Conversation c) {
-    final (label, doneIcon) = _status(c);
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+    final text = Theme.of(context).textTheme;
+    final style = ConversationStyle.of(c.category);
+    final (label, fg, bg, doneIcon) = _status(c);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: SoftCard(
         onTap: () => _open(c),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Icon(_icons[c.category], color: AppColors.primary, size: 40),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(c.title, style: Theme.of(context).textTheme.headlineMedium),
-                    Text(c.kannadaTitle, style: Theme.of(context).textTheme.bodyLarge),
-                    Text('${c.turns.length} turns', style: Theme.of(context).textTheme.bodyMedium),
-                  ],
-                ),
-              ),
-              Column(
+        padding: const EdgeInsets.all(18),
+        child: Row(
+          children: [
+            IconBadge(icon: style.icon, size: 60, background: style.background, foreground: style.foreground),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (doneIcon != null) Icon(doneIcon, color: AppColors.correct),
-                  Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.primary)),
+                  Text(c.title, style: text.titleLarge),
+                  Text(c.kannadaTitle, style: text.bodyLarge?.copyWith(color: AppColors.textSecondary)),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 10,
+                    runSpacing: 6,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(16)),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (doneIcon != null) ...[Icon(doneIcon, size: 16, color: fg), const SizedBox(width: 4)],
+                            Flexible(child: Text(label, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: fg))),
+                          ],
+                        ),
+                      ),
+                      Text('${c.turns.length} turns', style: text.bodyMedium?.copyWith(fontSize: 15)),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

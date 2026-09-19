@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_theme.dart';
 
-/// Simple "step X of N" bar used on the lesson/practice screens.
+/// "Step X of N" bar used on the lesson/practice/conversation screens. Animates
+/// smoothly between steps; the "X / N" label stays for clarity.
 class LessonProgressBar extends StatelessWidget {
   final int current;
   final int total;
@@ -10,21 +11,27 @@ class LessonProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fraction = total == 0 ? 0.0 : current / total;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+    final fraction = (total == 0 ? 0.0 : current / total).clamp(0.0, 1.0);
+    return Row(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: LinearProgressIndicator(
-            value: fraction.clamp(0.0, 1.0),
-            minHeight: 10,
-            backgroundColor: AppColors.primary.withValues(alpha: 0.15),
-            valueColor: const AlwaysStoppedAnimation(AppColors.primary),
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: TweenAnimationBuilder<double>(
+              tween: Tween(end: fraction),
+              duration: const Duration(milliseconds: 350),
+              curve: Curves.easeOutCubic,
+              builder: (context, value, _) => LinearProgressIndicator(
+                value: value,
+                minHeight: 12,
+                backgroundColor: AppColors.primarySoft,
+                valueColor: const AlwaysStoppedAnimation(AppColors.primary),
+              ),
+            ),
           ),
         ),
-        const SizedBox(height: 6),
-        Text('$current / $total', style: Theme.of(context).textTheme.bodyMedium),
+        const SizedBox(width: 12),
+        Text('$current / $total', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
       ],
     );
   }

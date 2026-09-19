@@ -16,6 +16,9 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('a conversation plays through with retry, speaking and progress recorded', (tester) async {
+    tester.view.physicalSize = const Size(800, 1600); // room for every answer option, as on a real phone
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
     final speechBackend = FakeSpeechBackend();
     final db = AppDatabase.forTesting(NativeDatabase.memory());
     appServices = AppServices(
@@ -61,7 +64,7 @@ void main() {
     await tester.pump();
     await tester.tap(find.text('CHECK'));
     await settle();
-    expect(find.text('✓ Correct!'), findsOneWidget);
+    expect(find.text('Correct!'), findsOneWidget);
 
     // Correct -> speak step.
     await tester.tap(find.text('Continue'));
@@ -71,7 +74,7 @@ void main() {
     await settle();
     speechBackend.emitResult('Yes, I want food', isFinal: true, confidence: 0.9);
     await settle();
-    expect(find.text('✓ Correct!'), findsOneWidget);
+    expect(find.text('Correct!'), findsOneWidget);
 
     await tester.tap(find.text('Continue'));
     await settle();

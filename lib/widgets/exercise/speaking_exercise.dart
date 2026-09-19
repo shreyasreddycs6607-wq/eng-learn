@@ -6,9 +6,11 @@ import '../../models/exercise_answer.dart';
 import '../../models/speaking_outcome.dart';
 import '../../models/speaking_result.dart';
 import '../../services/speaking_controller.dart';
+import '../icon_badge.dart';
 import '../microphone_button.dart';
 import '../primary_button.dart';
 import '../secondary_button.dart';
+import '../soft_card.dart';
 
 /// Listen, then speak — evaluated locally by SpeakingController/SpeakingEvaluator
 /// where offline recognition is available. Never a hard dependency: if the
@@ -97,7 +99,7 @@ class _SpeakingExerciseState extends State<SpeakingExercise> {
   @override
   Widget build(BuildContext context) {
     if (widget.submittedAnswer != null) {
-      return const Center(child: Icon(Icons.check_circle_rounded, color: AppColors.correct, size: 56));
+      return const Center(child: IconBadge(icon: Icons.check_rounded, size: 72, background: AppColors.correctSoft, foreground: AppColors.correct));
     }
 
     final state = _controller.state;
@@ -116,6 +118,7 @@ class _SpeakingExerciseState extends State<SpeakingExercise> {
   Widget _scroll(Widget child) => Center(child: SingleChildScrollView(child: child));
 
   Widget _buildFallback(BuildContext context, SpeakingUiState state) {
+    final text = Theme.of(context).textTheme;
     final message = state == SpeakingUiState.unavailable
         ? "Speech recognition isn't available on this device."
         : 'Microphone access is needed for speaking practice.';
@@ -123,10 +126,12 @@ class _SpeakingExerciseState extends State<SpeakingExercise> {
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(message, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
-          const SizedBox(height: 8),
-          const Text('You can still listen and repeat.', textAlign: TextAlign.center),
-          const SizedBox(height: 24),
+          const IconBadge(icon: Icons.mic_off_rounded, size: 64, background: AppColors.accentSoft, foreground: AppColors.almost),
+          const SizedBox(height: 14),
+          Text(message, textAlign: TextAlign.center, style: text.bodyLarge),
+          const SizedBox(height: 6),
+          Text('You can still listen and repeat.', textAlign: TextAlign.center, style: text.bodyMedium),
+          const SizedBox(height: 22),
           Semantics(
             label: 'I repeated it',
             child: PrimaryButton(label: "I repeated it", onPressed: _submitHonestFallback),
@@ -137,38 +142,53 @@ class _SpeakingExerciseState extends State<SpeakingExercise> {
   }
 
   Widget _buildResult(BuildContext context, SpeakingResult result) {
+    final text = Theme.of(context).textTheme;
     switch (result.outcome) {
       case SpeakingOutcome.good:
         return _scroll(
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.check_circle_rounded, color: AppColors.correct, size: 56),
-              const SizedBox(height: 12),
-              Text('Good! Nice speaking.', style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 20),
-              PrimaryButton(label: 'Continue', onPressed: _submitGood),
+              const IconBadge(icon: Icons.check_rounded, size: 72, background: AppColors.correct, foreground: Colors.white),
+              const SizedBox(height: 14),
+              Text('Good! Nice speaking.', style: text.headlineSmall?.copyWith(color: AppColors.correct)),
+              const SizedBox(height: 22),
+              PrimaryButton(label: 'Continue', onPressed: _submitGood, color: AppColors.correct),
             ],
           ),
         );
       case SpeakingOutcome.almost:
       case SpeakingOutcome.tryAgain:
+        final almost = result.outcome == SpeakingOutcome.almost;
         return _scroll(
           Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                result.outcome == SpeakingOutcome.almost ? 'Almost!' : 'Not quite.',
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.almost),
+                almost ? 'Almost!' : 'Not quite.',
+                textAlign: TextAlign.center,
+                style: text.headlineSmall?.copyWith(color: almost ? AppColors.almost : AppColors.incorrect),
               ),
-              const SizedBox(height: 8),
-              Text('You said: "${result.recognizedText}"', textAlign: TextAlign.center),
-              const SizedBox(height: 4),
-              Text('Try saying: "${result.expectedText}"', textAlign: TextAlign.center),
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
+              SoftCard(
+                shadow: false,
+                color: almost ? AppColors.almostSoft : AppColors.incorrectSoft,
+                borderColor: (almost ? AppColors.almost : AppColors.incorrect).withValues(alpha: 0.3),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('You said: \u201c${result.recognizedText}\u201d', style: text.bodyMedium),
+                    const SizedBox(height: 6),
+                    Text('Try saying: \u201c${result.expectedText}\u201d', style: text.titleMedium),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 18),
               Semantics(
                 label: 'Try again',
-                child: PrimaryButton(label: '\u{1F3A4} Try Again', onPressed: _controller.retry),
+                child: PrimaryButton(label: 'Try Again', icon: Icons.refresh_rounded, onPressed: _controller.retry),
               ),
               const SizedBox(height: 8),
               SecondaryButton(
@@ -184,13 +204,15 @@ class _SpeakingExerciseState extends State<SpeakingExercise> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("I couldn't understand that.", style: Theme.of(context).textTheme.bodyLarge),
+              const IconBadge(icon: Icons.hearing_rounded, size: 64, background: AppColors.accentSoft, foreground: AppColors.almost),
+              const SizedBox(height: 14),
+              Text("I couldn't understand that.", textAlign: TextAlign.center, style: text.titleLarge),
               const SizedBox(height: 4),
-              const Text('Try again or listen again.'),
+              Text('Try again or listen again.', textAlign: TextAlign.center, style: text.bodyMedium),
               const SizedBox(height: 20),
               Semantics(
                 label: 'Try again',
-                child: PrimaryButton(label: '\u{1F3A4} Try Again', onPressed: _controller.retry),
+                child: PrimaryButton(label: 'Try Again', icon: Icons.refresh_rounded, onPressed: _controller.retry),
               ),
               const SizedBox(height: 8),
               SecondaryButton(label: "I repeated it instead", onPressed: _submitHonestFallback),

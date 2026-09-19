@@ -97,7 +97,7 @@ void main() {
       await tester.pump();
       await tester.tap(find.text('CHECK'));
       await pause(tester); // the answer is recorded in the background
-      expect(find.text('✓ Correct!'), findsOneWidget, reason: e.id);
+      expect(find.text('Correct!'), findsOneWidget, reason: e.id);
 
       await tester.tap(find.text('Continue'));
       if (i == exercises.length - 1) await tester.tap(find.text('Continue'), warnIfMissed: false); // double tap on the last one

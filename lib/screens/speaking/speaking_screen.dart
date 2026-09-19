@@ -5,7 +5,10 @@ import '../../models/lesson.dart';
 import '../../models/lesson_content.dart';
 import '../../widgets/audio_player_button.dart';
 import '../../widgets/audio_speed_control.dart';
+import '../../widgets/back_circle_button.dart';
+import '../../widgets/icon_badge.dart';
 import '../../widgets/primary_button.dart';
+import '../../widgets/soft_card.dart';
 import '../lesson/lesson_complete_screen.dart';
 
 /// UI-only — Phase 5/6 do not implement speech recognition, so this never
@@ -67,16 +70,16 @@ class _SpeakingScreenState extends State<SpeakingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final text = Theme.of(context).textTheme;
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppSpacing.screen),
           child: Column(
             children: [
               Row(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_rounded),
+                  BackCircleButton(
                     onPressed: () {
                       appServices.audio.stop();
                       Navigator.of(context).pop();
@@ -90,22 +93,37 @@ class _SpeakingScreenState extends State<SpeakingScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Say:', style: Theme.of(context).textTheme.bodyLarge),
-                        const SizedBox(height: 16),
-                        Text(_sentence, style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center),
-                        const SizedBox(height: 32),
-                        AudioPlayerButton(audioPath: _audioPath, label: 'sentence'),
+                        Text('Say:', style: text.titleMedium?.copyWith(color: AppColors.textSecondary)),
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          width: double.infinity,
+                          child: SoftCard(
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+                            child: Column(
+                              children: [
+                                Text(_sentence, style: text.headlineMedium?.copyWith(color: AppColors.primary), textAlign: TextAlign.center),
+                                const SizedBox(height: 8),
+                                Text(_target.kannadaText, style: text.bodyLarge?.copyWith(color: AppColors.textSecondary), textAlign: TextAlign.center),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        AudioPlayerButton(audioPath: _audioPath, label: 'sentence', size: 84),
                         if (appServices.audio.hasAudio(_audioPath)) ...[
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
                           const AudioSpeedControl(),
                         ],
                         const SizedBox(height: 28),
-                        if (_repeated)
-                          const Icon(Icons.check_circle_rounded, color: AppColors.correct, size: 56)
-                        else
-                          PrimaryButton(label: "I repeated it", onPressed: () => setState(() => _repeated = true)),
-                        const SizedBox(height: 12),
-                        Text(_repeated ? 'Good!' : 'Repeat the sentence aloud.', style: Theme.of(context).textTheme.bodyMedium),
+                        if (_repeated) ...[
+                          const IconBadge(icon: Icons.check_rounded, size: 72, background: AppColors.correct, foreground: Colors.white),
+                          const SizedBox(height: 12),
+                          Text('Good!', style: text.headlineSmall?.copyWith(color: AppColors.correct)),
+                        ] else ...[
+                          PrimaryButton(label: "I repeated it", icon: Icons.record_voice_over_rounded, onPressed: () => setState(() => _repeated = true)),
+                          const SizedBox(height: 12),
+                          Text('Repeat the sentence aloud.', style: text.bodyMedium),
+                        ],
                       ],
                     ),
                   ),
@@ -114,7 +132,7 @@ class _SpeakingScreenState extends State<SpeakingScreen> {
               if (_repeated)
                 PrimaryButton(label: 'Continue', onPressed: _continue)
               else
-                const SizedBox(height: 64),
+                const SizedBox(height: 60),
             ],
           ),
         ),

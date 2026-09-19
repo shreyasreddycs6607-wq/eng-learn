@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'back_circle_button.dart';
 import 'progress_indicator.dart';
 
-/// Back button + lesson progress, shared by Lesson/Exercise/Speak screens
+/// Back button + progress, shared by Lesson/Exercise/Speak/Conversation screens
 /// so back navigation and progress placement stay consistent everywhere.
 class LessonHeader extends StatelessWidget {
   final int current;
@@ -13,10 +14,8 @@ class LessonHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        const BackCircleButton(),
+        const SizedBox(width: 14),
         Expanded(child: LessonProgressBar(current: current, total: total)),
       ],
     );

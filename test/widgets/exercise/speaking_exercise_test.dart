@@ -117,6 +117,6 @@ void main() {
     await tester.pump();
 
     expect(find.byIcon(Icons.mic_rounded), findsNothing);
-    expect(find.byIcon(Icons.check_circle_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.check_rounded), findsOneWidget);
   });
 }

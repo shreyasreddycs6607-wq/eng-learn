@@ -81,25 +81,38 @@ class AudioPlayerButton extends StatelessWidget {
 
   Widget _buildCircle(BuildContext context, AudioService service, String path, AudioPlaybackStatus status) {
     final (icon, semanticLabel) = _iconAndAction(status);
-    final color = status == AudioPlaybackStatus.error ? AppColors.incorrect : AppColors.primary;
+    final failed = status == AudioPlaybackStatus.error;
+    final background = failed ? AppColors.incorrectSoft : AppColors.primary;
+    final foreground = failed ? AppColors.incorrect : Colors.white;
     return Semantics(
       label: semanticLabel,
       button: true,
-      child: Material(
-        color: color.withValues(alpha: 0.12),
-        shape: const CircleBorder(),
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: status == AudioPlaybackStatus.loading ? null : () => _handleTap(service, path, status),
-          child: Padding(
-            padding: EdgeInsets.all(size / 4),
-            child: status == AudioPlaybackStatus.loading
-                ? SizedBox(
-                    width: size / 2,
-                    height: size / 2,
-                    child: const CircularProgressIndicator(strokeWidth: 2.5),
-                  )
-                : Icon(icon, size: size / 2, color: color),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: failed
+              ? null
+              : [BoxShadow(color: AppColors.primary.withValues(alpha: 0.30), blurRadius: 16, offset: const Offset(0, 6))],
+        ),
+        child: Material(
+          color: background,
+          shape: const CircleBorder(),
+          child: InkWell(
+            customBorder: const CircleBorder(),
+            onTap: status == AudioPlaybackStatus.loading ? null : () => _handleTap(service, path, status),
+            child: SizedBox(
+              width: size,
+              height: size,
+              child: Center(
+                child: status == AudioPlaybackStatus.loading
+                    ? SizedBox(
+                        width: size / 2.4,
+                        height: size / 2.4,
+                        child: CircularProgressIndicator(strokeWidth: 3, color: foreground),
+                      )
+                    : Icon(icon, size: size * 0.5, color: foreground),
+              ),
+            ),
           ),
         ),
       ),
@@ -108,27 +121,34 @@ class AudioPlayerButton extends StatelessWidget {
 
   Widget _buildPill(BuildContext context, AudioService service, String path, AudioPlaybackStatus status) {
     final (icon, semanticLabel) = _iconAndAction(status);
-    final color = status == AudioPlaybackStatus.error ? AppColors.incorrect : AppColors.textSecondary;
+    final failed = status == AudioPlaybackStatus.error;
+    final color = failed ? AppColors.incorrect : AppColors.primary;
     return Semantics(
       label: semanticLabel,
       button: true,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: status == AudioPlaybackStatus.loading ? null : () => _handleTap(service, path, status),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              status == AudioPlaybackStatus.loading
-                  ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                  : Icon(icon, size: 20, color: color),
-              const SizedBox(width: 6),
-              Text(
-                status == AudioPlaybackStatus.error ? 'Couldn\'t play audio' : label,
-                style: TextStyle(fontSize: 15, color: color),
-              ),
-            ],
+      child: Material(
+        color: failed ? AppColors.incorrectSoft : AppColors.primarySoft,
+        borderRadius: BorderRadius.circular(26),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(26),
+          onTap: status == AudioPlaybackStatus.loading ? null : () => _handleTap(service, path, status),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                status == AudioPlaybackStatus.loading
+                    ? SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: color))
+                    : Icon(icon, size: 24, color: color),
+                const SizedBox(width: 10),
+                Flexible(
+                  child: Text(
+                    failed ? "Couldn't play audio" : label,
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: color),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

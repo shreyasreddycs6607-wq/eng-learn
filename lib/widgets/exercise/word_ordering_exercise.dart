@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_theme.dart';
 import '../../models/exercise.dart';
 import '../../models/exercise_answer.dart';
 import '../../models/exercise_option.dart';
@@ -81,12 +82,23 @@ class _WordOrderingExerciseState extends State<WordOrderingExercise> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Your sentence:'),
+                Text('Your sentence:', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
                 const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: displayWords.map((o) => _chip(o, placed: true)).toList(),
+                // The tray the sentence is built in.
+                Container(
+                  width: double.infinity,
+                  constraints: const BoxConstraints(minHeight: 80),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.primarySoft.withValues(alpha: 0.45),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.25), width: 2),
+                  ),
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: displayWords.map((o) => _chip(o, placed: true)).toList(),
+                  ),
                 ),
                 const SizedBox(height: 24),
                 if (!_locked)
@@ -111,8 +123,14 @@ class _WordOrderingExerciseState extends State<WordOrderingExercise> {
 
   Widget _chip(ExerciseOption option, {required bool placed}) {
     return ActionChip(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      label: Text(option.text, style: const TextStyle(fontSize: 18)),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: placed ? AppColors.primary : AppColors.border, width: 2),
+      ),
+      backgroundColor: placed ? AppColors.primarySoft : AppColors.surface,
+      disabledColor: placed ? AppColors.primarySoft : AppColors.surface,
+      label: Text(option.text, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
       onPressed: _locked ? null : () => placed ? _tapBuilt(option) : _tapBank(option),
     );
   }

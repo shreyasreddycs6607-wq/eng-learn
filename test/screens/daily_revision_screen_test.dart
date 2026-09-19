@@ -63,7 +63,7 @@ void main() {
     await tester.pump();
     await tester.tap(find.text('CHECK'));
     await settle(tester);
-    expect(find.text('✓ Correct!'), findsOneWidget);
+    expect(find.text('Correct!'), findsOneWidget);
 
     await tester.tap(find.text('Continue'));
     await tester.pump();

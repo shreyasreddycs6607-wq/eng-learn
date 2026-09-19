@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/services/app_services.dart';
+import '../../core/theme/app_theme.dart';
 import '../../models/lesson.dart';
 import '../../widgets/lesson_complete_card.dart';
 import '../../widgets/primary_button.dart';
@@ -53,12 +54,14 @@ class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppSpacing.screen),
           child: Column(
             children: [
-              const Spacer(),
-              LessonCompleteCard(correct: widget.correct, total: widget.total),
-              const Spacer(),
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(child: LessonCompleteCard(correct: widget.correct, total: widget.total)),
+                ),
+              ),
               PrimaryButton(label: 'Continue', onPressed: _goHome),
               const SizedBox(height: 12),
               SecondaryButton(

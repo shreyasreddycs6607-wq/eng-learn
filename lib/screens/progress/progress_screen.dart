@@ -5,7 +5,9 @@ import '../../core/theme/app_theme.dart';
 import '../../models/lesson.dart';
 import '../../models/progress.dart';
 import '../../models/reminder_setting.dart';
+import '../../widgets/icon_badge.dart';
 import '../../widgets/secondary_button.dart';
+import '../../widgets/soft_card.dart';
 import '../lesson/lesson_screen.dart';
 
 class ProgressScreen extends StatefulWidget {
@@ -99,28 +101,32 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Widget _reminderCard(BuildContext context) {
+    final text = Theme.of(context).textTheme;
     final time = TimeOfDay(hour: _reminder.hour, minute: _reminder.minute).format(context);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text('Daily reminder', style: Theme.of(context).textTheme.bodyLarge),
-              subtitle: Text(
-                _reminder.enabled ? 'Every day at $time' : 'Off. Turn on for a gentle daily reminder to practise.',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              value: _reminder.enabled,
-              onChanged: _toggleReminder,
+    return SoftCard(
+      padding: const EdgeInsets.fromLTRB(18, 8, 14, 16),
+      child: Column(
+        children: [
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            secondary: IconBadge(
+              icon: _reminder.enabled ? Icons.notifications_active_rounded : Icons.notifications_none_rounded,
+              background: _reminder.enabled ? AppColors.accentSoft : AppColors.primarySoft,
+              foreground: _reminder.enabled ? AppColors.almost : AppColors.primary,
             ),
-            if (_reminder.enabled) ...[
-              const SizedBox(height: 8),
-              SecondaryButton(label: 'Change time', onPressed: _pickReminderTime),
-            ],
+            title: Text('Daily reminder', style: text.titleMedium),
+            subtitle: Text(
+              _reminder.enabled ? 'Every day at $time' : 'Off. Turn on for a gentle daily reminder to practise.',
+              style: text.bodyMedium,
+            ),
+            value: _reminder.enabled,
+            onChanged: _toggleReminder,
+          ),
+          if (_reminder.enabled) ...[
+            const SizedBox(height: 4),
+            SecondaryButton(label: 'Change time', icon: Icons.schedule_rounded, onPressed: _pickReminderTime),
           ],
-        ),
+        ],
       ),
     );
   }
@@ -157,27 +163,45 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
     final completedLessons = _lessons.where((l) => _progress[l.id]?.completed == true);
     final wordsLearned = appServices.progress.totalWordsLearned(_lessons, _progress);
+    final text = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Your Progress')),
       body: ListView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(AppSpacing.screen, 8, AppSpacing.screen, 32),
         children: [
-          _stat(context, 'Lessons completed', '${completedLessons.length}'),
-          const SizedBox(height: 24),
-          _stat(context, 'Words learned', '$wordsLearned'),
-          const SizedBox(height: 24),
-          _stat(context, '🔥 Streak', '$_streak days'),
-          const SizedBox(height: 24),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(child: _stat(context, Icons.menu_book_rounded, AppColors.primary, AppColors.primarySoft, '${completedLessons.length}', 'Lessons')),
+                const SizedBox(width: 10),
+                Expanded(child: _stat(context, Icons.spellcheck_rounded, AppColors.correct, AppColors.correctSoft, '$wordsLearned', 'Words')),
+                const SizedBox(width: 10),
+                Expanded(child: _stat(context, Icons.local_fire_department_rounded, AppColors.almost, AppColors.accentSoft, '$_streak', _streak == 1 ? 'Day streak' : 'Days streak')),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
           _reminderCard(context),
-          const SizedBox(height: 32),
-          Text('Lessons', style: Theme.of(context).textTheme.headlineMedium),
+          const SizedBox(height: 28),
+          Text('Lessons', style: text.titleLarge),
           if (completedLessons.isNotEmpty) ...[
             const SizedBox(height: 4),
-            Text('Tap a finished lesson to do it again.', style: Theme.of(context).textTheme.bodyMedium),
+            Text('Tap a finished lesson to do it again.', style: text.bodyMedium),
           ],
           const SizedBox(height: 12),
-          ..._lessons.map((l) => _lessonRow(context, l, _progress[l.id]?.completed == true)),
+          SoftCard(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Column(
+              children: [
+                for (var i = 0; i < _lessons.length; i++) ...[
+                  if (i > 0) const Divider(indent: 20, endIndent: 20),
+                  _lessonRow(context, _lessons[i], _progress[_lessons[i].id]?.completed == true),
+                ],
+              ],
+            ),
+          ),
           if (kDebugMode) ...[
             const SizedBox(height: 32),
             OutlinedButton(onPressed: _resetProgress, child: const Text('Reset progress (debug)')),
@@ -190,21 +214,31 @@ class _ProgressScreenState extends State<ProgressScreen> {
   /// A finished lesson is tappable (redo it); one not finished yet is just listed —
   /// the Home screen's Continue button takes the learner to the next lesson.
   Widget _lessonRow(BuildContext context, Lesson lesson, bool completed) {
+    final text = Theme.of(context).textTheme;
     final row = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: Row(
         children: [
-          Icon(
-            completed ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-            color: completed ? AppColors.correct : AppColors.textSecondary,
+          Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: completed ? AppColors.correct : AppColors.background,
+              border: completed ? null : Border.all(color: AppColors.border, width: 2),
+            ),
+            child: completed
+                ? const Icon(Icons.check_rounded, color: Colors.white, size: 24)
+                : Text('${lesson.order}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textSecondary)),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(lesson.kannadaTitle, style: Theme.of(context).textTheme.bodyLarge),
-                Text(lesson.title, style: Theme.of(context).textTheme.bodyMedium),
+                Text(lesson.kannadaTitle, style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w600)),
+                Text(lesson.title, style: text.bodyMedium),
               ],
             ),
           ),
@@ -216,21 +250,21 @@ class _ProgressScreenState extends State<ProgressScreen> {
     return Semantics(
       button: true,
       label: 'Do ${lesson.title} again',
-      child: InkWell(borderRadius: BorderRadius.circular(12), onTap: () => _reopen(lesson), child: row),
+      child: InkWell(borderRadius: BorderRadius.circular(16), onTap: () => _reopen(lesson), child: row),
     );
   }
 
-  Widget _stat(BuildContext context, String label, String value) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            Text(label, style: Theme.of(context).textTheme.bodyMedium),
-            const SizedBox(height: 8),
-            Text(value, style: Theme.of(context).textTheme.displayMedium),
-          ],
-        ),
+  Widget _stat(BuildContext context, IconData icon, Color color, Color background, String value, String label) {
+    final text = Theme.of(context).textTheme;
+    return SoftCard(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+      child: Column(
+        children: [
+          IconBadge(icon: icon, size: 40, background: background, foreground: color),
+          const SizedBox(height: 10),
+          Text(value, style: text.headlineMedium?.copyWith(fontWeight: FontWeight.w800)),
+          Text(label, style: text.bodyMedium?.copyWith(fontSize: 15), textAlign: TextAlign.center),
+        ],
       ),
     );
   }
