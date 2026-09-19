@@ -45,6 +45,41 @@ void main() {
     await db.close();
   });
 
+  test('v4 -> v5 keeps existing progress and adds the (off by default) reminder setting', () async {
+    final db = AppDatabase.forTesting(NativeDatabase.memory(setup: (raw) {
+      raw.execute('''
+        CREATE TABLE lesson_progress_entries (
+          lesson_id TEXT NOT NULL, completed INTEGER NOT NULL DEFAULT 0, attempts INTEGER NOT NULL DEFAULT 0,
+          correct_answers INTEGER NOT NULL DEFAULT 0, incorrect_answers INTEGER NOT NULL DEFAULT 0,
+          last_practiced INTEGER, PRIMARY KEY (lesson_id));''');
+      raw.execute('''
+        CREATE TABLE user_profile_entries (
+          id INTEGER NOT NULL DEFAULT 0, current_lesson_id TEXT, streak INTEGER NOT NULL DEFAULT 0,
+          last_learning_date INTEGER, PRIMARY KEY (id));''');
+      raw.execute('''
+        CREATE TABLE exercise_progress_entries (
+          exercise_id TEXT NOT NULL, lesson_id TEXT NOT NULL, attempt_count INTEGER NOT NULL DEFAULT 0,
+          correct_count INTEGER NOT NULL DEFAULT 0, incorrect_count INTEGER NOT NULL DEFAULT 0,
+          review_level INTEGER NOT NULL DEFAULT 0, last_attempted_at INTEGER, last_correct_at INTEGER,
+          next_review_at INTEGER, created_at INTEGER NOT NULL, PRIMARY KEY (exercise_id));''');
+      raw.execute("INSERT INTO user_profile_entries (id, streak) VALUES (0, 7);");
+      raw.execute("INSERT INTO exercise_progress_entries (exercise_id, lesson_id, attempt_count, correct_count, review_level, created_at) VALUES ('E1', 'L001', 5, 5, 5, 1758000000);");
+      raw.execute('PRAGMA user_version = 4;');
+    }));
+
+    final repo = ProgressRepository(db);
+    expect((await repo.loadProfile()).streak, 7);
+    expect((await ExerciseProgressRepository(db).getByExerciseId('E1'))!.reviewLevel, 5);
+
+    final reminder = await repo.loadReminder();
+    expect((reminder.enabled, reminder.minutesOfDay), (false, 18 * 60));
+    await repo.saveReminder(reminder.copyWith(enabled: true, minutesOfDay: 8 * 60 + 30));
+    final saved = await repo.loadReminder();
+    expect((saved.enabled, saved.hour, saved.minute), (true, 8, 30));
+
+    await db.close();
+  });
+
   test('a fresh install creates every table at the current schema version', () async {
     final db = AppDatabase.forTesting(NativeDatabase.memory());
     await ProgressRepository(db).saveProfile(const UserProfile(streak: 2));

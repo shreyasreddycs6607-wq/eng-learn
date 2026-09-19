@@ -35,12 +35,34 @@ void main() {
     expect(r.nextReviewAt, DateTime(2026, 10, 2, 10, 0));
   });
 
-  test('a 4th+ successful review stays at the longest interval (does not grow unbounded)', () {
-    final now = DateTime(2026, 9, 18);
-    final r = scheduler.calculateNext(currentReviewLevel: 4, successful: true, now: now);
+  test('after the weekly step, reviews stretch to fortnightly and then monthly', () {
+    var now = DateTime(2026, 9, 18, 10, 0);
+    var level = 0;
+    final gaps = <int>[];
+    for (var i = 0; i < 6; i++) {
+      final r = scheduler.calculateNext(currentReviewLevel: level, successful: true, now: now);
+      gaps.add(r.nextReviewAt.difference(now).inDays);
+      level = r.reviewLevel;
+      now = r.nextReviewAt;
+    }
 
-    expect(r.reviewLevel, 4);
-    expect(r.nextReviewAt, now.add(const Duration(days: 7)));
+    expect(gaps, [1, 2, 4, 7, 14, 30]);
+  });
+
+  test('a 6th+ successful review stays at monthly (does not grow unbounded)', () {
+    final now = DateTime(2026, 9, 18);
+    final r = scheduler.calculateNext(currentReviewLevel: 6, successful: true, now: now);
+
+    expect(r.reviewLevel, 6);
+    expect(r.nextReviewAt, now.add(const Duration(days: 30)));
+  });
+
+  test('a failure after a monthly review starts over at 1 day', () {
+    final now = DateTime(2026, 9, 18);
+    final r = scheduler.calculateNext(currentReviewLevel: 6, successful: false, now: now);
+
+    expect(r.reviewLevel, 0);
+    expect(r.nextReviewAt, now.add(const Duration(days: 1)));
   });
 
   test('failure at a high review level resets to the shortest interval (§107)', () {

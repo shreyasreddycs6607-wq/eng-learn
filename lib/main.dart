@@ -9,6 +9,7 @@ Future<void> main() async {
   await appServices.audio.loadBundledAssets();
   appServices.validateCurriculumInDebug(); // fire-and-forget, debug builds only
   runApp(const EnglishKaliyonaApp());
+  appServices.reminders.restore(); // re-applies a saved daily reminder; never throws
 }
 
 class EnglishKaliyonaApp extends StatelessWidget {

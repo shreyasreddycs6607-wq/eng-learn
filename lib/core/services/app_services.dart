@@ -12,7 +12,9 @@ import '../../data/repositories/progress_repository.dart';
 import '../../data/repositories/sentence_pattern_repository.dart';
 import '../../data/repositories/vocabulary_repository.dart';
 import '../../services/audio_service.dart';
+import '../../services/local_notifications_backend.dart';
 import '../../services/progress_service.dart';
+import '../../services/reminder_service.dart';
 import '../../services/revision_scheduler.dart';
 import '../../services/speech_recognition_service.dart';
 
@@ -32,6 +34,7 @@ class AppServices {
   final SpeechRecognitionService speech;
   final ExerciseProgressRepository exerciseProgress;
   final ConversationRepository conversations;
+  final ReminderService reminders;
 
   AppServices._({
     required this.database,
@@ -45,11 +48,17 @@ class AppServices {
     required this.speech,
     required this.exerciseProgress,
     required this.conversations,
+    required this.reminders,
   });
 
   /// Tests pass an in-memory database and fake audio/speech backends; the app
   /// calls this with no arguments.
-  factory AppServices({AppDatabase? database, AudioService? audio, SpeechRecognitionService? speech}) {
+  factory AppServices({
+    AppDatabase? database,
+    AudioService? audio,
+    SpeechRecognitionService? speech,
+    ReminderBackend? reminderBackend,
+  }) {
     final content = ContentService();
     database ??= AppDatabase();
     final lessons = LessonRepository(content);
@@ -67,6 +76,7 @@ class AppServices {
       speech: speech ?? SpeechRecognitionService(),
       exerciseProgress: ExerciseProgressRepository(database, RevisionScheduler(), progress.recordActivityToday),
       conversations: ConversationRepository(content),
+      reminders: ReminderService(reminderBackend ?? LocalNotificationsBackend(), progressRepository),
     );
   }
 

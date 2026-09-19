@@ -44,7 +44,7 @@ class UserProfileEntries extends Table {
 /// overlapping table — every exercise type feeds the same spaced-repetition
 /// schedule (see RevisionScheduler), not just speaking.
 ///
-/// `reviewLevel` (0-4) tracks consecutive successful reviews and drives
+/// `reviewLevel` (0-6) tracks consecutive successful reviews and drives
 /// `nextReviewAt` via RevisionScheduler; a failure resets it. `attemptCount`/
 /// `correctCount`/`incorrectCount` are lifetime history and are never reset
 /// by a failure — see Phase 8 §82-83 (history vs. current revision state).
@@ -64,7 +64,19 @@ class ExerciseProgressEntries extends Table {
   Set<Column> get primaryKey => {exerciseId};
 }
 
-@DriftDatabase(tables: [LessonProgressEntries, UserProfileEntries, ExerciseProgressEntries])
+/// Single-row table (id is always 0): the learner's daily-reminder choice.
+/// Kept apart from UserProfileEntries so saving the profile (streak) can never
+/// overwrite it.
+class ReminderSettingEntries extends Table {
+  IntColumn get id => integer().withDefault(const Constant(0))();
+  BoolColumn get enabled => boolean().withDefault(const Constant(false))();
+  IntColumn get minutesOfDay => integer().withDefault(const Constant(1080))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DriftDatabase(tables: [LessonProgressEntries, UserProfileEntries, ExerciseProgressEntries, ReminderSettingEntries])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
@@ -72,7 +84,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -95,6 +107,10 @@ class AppDatabase extends _$AppDatabase {
           // the table from the current definition and copies matching columns.
           if (from < 4) {
             await m.alterTable(TableMigration(lessonProgressEntries));
+          }
+          // v4 -> v5: the opt-in daily reminder setting.
+          if (from < 5) {
+            await m.createTable(reminderSettingEntries);
           }
         },
       );

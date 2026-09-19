@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import '../../models/progress.dart';
+import '../../models/reminder_setting.dart';
 import '../local/database/app_database.dart';
 
 /// The only place in the app that talks to the progress database. Screens
@@ -51,6 +52,21 @@ class ProgressRepository {
             currentLessonId: Value(profile.currentLessonId),
             streak: Value(profile.streak),
             lastLearningDate: Value(profile.lastLearningDate),
+          ),
+        );
+  }
+
+  Future<ReminderSetting> loadReminder() async {
+    final row = await (_db.select(_db.reminderSettingEntries)..where((t) => t.id.equals(0))).getSingleOrNull();
+    return row == null ? const ReminderSetting() : ReminderSetting(enabled: row.enabled, minutesOfDay: row.minutesOfDay);
+  }
+
+  Future<void> saveReminder(ReminderSetting setting) async {
+    await _db.into(_db.reminderSettingEntries).insertOnConflictUpdate(
+          ReminderSettingEntriesCompanion(
+            id: const Value(0),
+            enabled: Value(setting.enabled),
+            minutesOfDay: Value(setting.minutesOfDay),
           ),
         );
   }

@@ -14,6 +14,7 @@ void main() {
   test('3 consecutive correct is Comfortable', () {
     expect(masteryFor(attemptCount: 3, reviewLevel: 3), MasteryLevel.comfortable);
     expect(masteryFor(attemptCount: 9, reviewLevel: 4), MasteryLevel.comfortable);
+    expect(masteryFor(attemptCount: 12, reviewLevel: 6), MasteryLevel.comfortable); // monthly reviews
   });
 
   test('a failure (reviewLevel reset to 0) drops Comfortable back to Practicing', () {
